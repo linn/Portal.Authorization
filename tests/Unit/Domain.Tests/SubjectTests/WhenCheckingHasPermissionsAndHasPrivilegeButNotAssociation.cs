@@ -18,7 +18,6 @@
             this.retailerUri = new Uri("/retailers/123", UriKind.RelativeOrAbsolute);
             this.sut = new Subject(Guid.NewGuid().ToString());
 
-
             var privilege = new Privilege(AuthorisedActions.ViewInvoices);
 
             var permission = new Permission(privilege, this.sut);
