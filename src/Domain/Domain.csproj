@@ -1,0 +1,9 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFramework>net9.0</TargetFramework>
+		<AssemblyName>Linn.Portal.Authorization.Domain</AssemblyName>
+		<RootNamespace>Linn.Portal.Authorization.Domain</RootNamespace>
+	</PropertyGroup>
+
+</Project>

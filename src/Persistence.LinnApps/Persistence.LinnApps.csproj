@@ -1,0 +1,26 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFramework>net9.0</TargetFramework>
+		<RootNamespace>Linn.Portal.Authorization.Persistence.LinnApps</RootNamespace>
+		<AssemblyName>Linn.Portal.Authorization.Persistence.LinnApps</AssemblyName>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Linn.Common.Configuration" Version="3.0.0" />
+		<PackageReference Include="Linn.Common.Logging" Version="2.0.0" />
+		<PackageReference Include="Linn.Common.Persistence" Version="5.0.1" />
+		<PackageReference Include="Linn.Common.Persistence.EntityFramework" Version="6.0.0" />
+		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="9.0.8" />
+		<PackageReference Include="Oracle.EntityFrameworkCore" Version="7.21.13" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\Domain.LinnApps\Domain.LinnApps.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Folder Include="Repositories\" />
+	</ItemGroup>
+
+</Project>

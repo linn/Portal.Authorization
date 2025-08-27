@@ -1,0 +1,13 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFramework>net9.0</TargetFramework>
+		<AssemblyName>Linn.Portal.Authorization.Resources</AssemblyName>
+		<RootNamespace>Linn.Portal.Authorization.Resources</RootNamespace>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Linn.Common.Resources" Version="2.2.0" />
+	</ItemGroup>
+
+</Project>
