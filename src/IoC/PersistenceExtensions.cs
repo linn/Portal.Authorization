@@ -2,7 +2,7 @@
 {
     using Linn.Common.Persistence;
     using Linn.Common.Persistence.EntityFramework;
-    using Linn.Portal.Authorization.Persistence.LinnApps;
+    using Linn.Portal.Authorization.Persistence;
 
     using Microsoft.EntityFrameworkCore;
     using Microsoft.Extensions.DependencyInjection;

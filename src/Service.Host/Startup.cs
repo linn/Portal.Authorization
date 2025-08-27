@@ -40,7 +40,6 @@ namespace Linn.Portal.Authorization.Service.Host
             services.AddBuilders();
             services.AddPersistence();
             services.AddHandlers();
-            services.AddMessageDispatchers();
 
             services.AddLinnAuthentication(
                 options =>
