@@ -6,11 +6,22 @@
 
     public class Subject
     {
-        public Guid Sub { get; set; }
+        public Subject(string sub)
+        {
+            this.Sub = Guid.Parse(sub);
+            this.Associations = new List<Association>();
+            this.Permissions = new List<Permission>();
+        }
 
-        public ICollection<Association> Associations { get; set; }
+        public Subject()
+        {
+        }
+
+        public Guid Sub { get; protected set; }
+
+        public ICollection<Association> Associations { get; protected set; }
         
-        public ICollection<Permission> Permissions { get; set; }
+        public ICollection<Permission> Permissions { get; protected set; }
 
         public bool HasPermissionFor(string privilege, Uri resource)
         {
@@ -21,6 +32,16 @@
                 p.Privilege.Action == privilege);
 
             return hasAssociation && hasPrivilege;
+        }
+
+        public void AddAssociation(Association toAdd)
+        {
+            this.Associations.Add(toAdd);
+        }
+
+        public void AddPermission(Permission toAdd)
+        {
+            this.Permissions.Add(toAdd);
         }
     }
 }

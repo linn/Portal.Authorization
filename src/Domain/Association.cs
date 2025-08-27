@@ -4,12 +4,23 @@
 
     public class Association
     {
-        public Subject Subject { get; set; }
-        
-        public Uri AssociatedResource { get; set; }
-        
-        public bool IsActive { get; set; }
+        public Association(Subject sub, Uri associatedResource)
+        {
+            this.IsActive = true;
+            this.Subject = sub;
+            this.AssociatedResource = associatedResource;
+        }
 
-        public int Id { get; set; }
+        public Association()
+        {
+        }
+
+        public Subject Subject { get; protected set; }
+        
+        public Uri AssociatedResource { get; protected set; }
+        
+        public bool IsActive { get; protected set; }
+
+        public int Id { get; protected set; }
     }
 }

@@ -38,7 +38,7 @@ namespace Linn.Portal.Authorization.Service.Host
             services.AddServices();
             services.AddFacadeServices();
             services.AddBuilders();
-            services.AddPersistence();
+            services.AddPersistence();  
             services.AddHandlers();
 
             services.AddLinnAuthentication(

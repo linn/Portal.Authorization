@@ -4,7 +4,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
 
-namespace Linn.Portal.Authorization.Persistence.Migrations
+namespace Linn.Portal.Persistence.Authorization.Migrations
 {
     /// <inheritdoc />
     public partial class InitialAuthorization : Migration
