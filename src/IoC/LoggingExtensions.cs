@@ -5,6 +5,7 @@
     using Amazon.SQS;
 
     using Linn.Common.Logging;
+    using Linn.Portal.Authorization.IoC.Logging.AmazonSQS;
 
     using Microsoft.Extensions.DependencyInjection;
 
