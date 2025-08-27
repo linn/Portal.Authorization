@@ -1,9 +1,9 @@
 # Portal Authorization
 
 ## Project Summary
-Application for managing authorization (permissions and associations) related to accessing APIs from the portal app.
+Application for managing authorization permissions and associations related to accessing internal APIs for users of the public facing portal app.
 
-Provides APIs for creating new users (to service the cognito PostConfirmation lamnda), associating users to retailers and managing permissions regarding those users access to resources pertaining to retailers they are associated with.
+Provides APIs for creating new users (to service the cognito PostConfirmation lambda), associating users to retailers and managing permissions regarding those users access to resources pertaining to retailers they are associated with.
 
 Also provides a react client for GUI management of the above.
 
