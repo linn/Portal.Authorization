@@ -13,3 +13,4 @@ echo "Using Node version: $(node -v)"
 
 cd ./src/Service.Host
 npm ci
+cd ../../
