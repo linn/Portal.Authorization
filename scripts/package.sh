@@ -20,4 +20,4 @@ docker build --no-cache -t linn/portalAuthorization:$TRAVIS_BUILD_NUMBER --build
 
 
 # push to dockerhub 
-docker push linn/portalAuthorization:$TRAVIS_BUILD_NUMBER
+docker push linn/portal-authorization:$TRAVIS_BUILD_NUMBER

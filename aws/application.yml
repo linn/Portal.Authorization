@@ -134,7 +134,7 @@ Resources:
         - Name: portalAuthorization
           Cpu: '1'
           Essential: 'true'
-          Image: !Sub docker.io/linn/portalAuthorization:${dockerTag}
+          Image: !Sub docker.io/linn/portal-authorization:${dockerTag}
           PortMappings:
             - ContainerPort: 5050
           Memory: '500'
