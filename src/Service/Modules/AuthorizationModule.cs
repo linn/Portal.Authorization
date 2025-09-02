@@ -3,6 +3,7 @@
     using System.Threading.Tasks;
 
     using Linn.Common.Service;
+    using Linn.Common.Service.Extensions;
     using Linn.Portal.Authorization.Facade.Services;
     using Linn.Portal.Authorization.Resources;
 
@@ -14,16 +15,20 @@
     {
         public void MapEndpoints(IEndpointRouteBuilder endpoints)
         {
-            endpoints.MapGet("/portal/authorization/subjects", this.CheckAuth);
+            endpoints.MapPost("/portal-authorization/check-authorization", this.CheckAuth);
         }
 
         private async Task CheckAuth(
             HttpRequest req,
             HttpResponse res,
-            SubjectResource resource,
-            ISubjectService service)
+            AuthorisationQueryResource resource,
+            IAuthorizationService service)
         {
-
+            await res.Negotiate(
+                await service.HasPermissionFor(
+                    resource.Sub, 
+                    resource.AttemptedAction, 
+                    resource.AssociationUri));
         }
     }
 }

@@ -1,4 +1,4 @@
-﻿namespace Linn.Portal.Authorization.Integration.Tests.SubjectModuleTests
+﻿namespace Linn.Portal.Authorization.Integration.Tests.AuthorizationModuleTests
 {
     using System.Net.Http;
 
@@ -23,22 +23,19 @@
 
         protected ISubjectRepository Repository { get; private set; }
 
-        protected ITransactionManager TransactionManager { get; private set; }
-
         [SetUp]
         public void SetUpContext()
         {
             this.Repository = Substitute.For<ISubjectRepository>();
-            this.TransactionManager = Substitute.For<ITransactionManager>();
-            ISubjectService facadeService = new SubjectService(this.Repository, this.TransactionManager);
+            IAuthorizationService facadeService = new AuthorizationService(this.Repository);
 
-            this.Client = TestClient.With<SubjectModule>(
+            this.Client = TestClient.With<AuthorizationModule>(
                 services =>
-                {
-                    services.AddSingleton(facadeService);
-                    services.AddHandlers();
-                    services.AddRouting();
-                });
+                    {
+                        services.AddSingleton(facadeService);
+                        services.AddHandlers();
+                        services.AddRouting();
+                    });
         }
     }
 }

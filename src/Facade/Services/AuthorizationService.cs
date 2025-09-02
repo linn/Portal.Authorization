@@ -5,6 +5,7 @@
 
     using Linn.Common.Facade;
     using Linn.Portal.Authorization.Persistence.Repositories;
+    using Linn.Portal.Authorization.Resources;
 
     public class AuthorizationService : IAuthorizationService
     {
@@ -15,18 +16,18 @@
             this.subjectRepository = subjectRepository;
         }
 
-        public async Task<IResult<bool>> HasPermissionFor(string sub, string privilege, Uri resource)
+        public async Task<IResult<AuthorizationQueryResultResource>> HasPermissionFor(string sub, string privilege, Uri associationUri)
         {
             var subject = await this.subjectRepository.GetById(sub);
 
-            if (subject.HasPermissionFor(privilege, resource))
+            if (subject.HasPermissionFor(privilege, associationUri))
             {
-                return new SuccessResult<bool>(true);
+                return new SuccessResult<AuthorizationQueryResultResource>(new AuthorizationQueryResultResource { IsAuthorized = true });
             }
             else
             {
-                return new UnauthorisedResult<bool>(
-                    $"Subject {sub} does not have permission to perform {privilege} for {resource}");
+                return new UnauthorisedResult<AuthorizationQueryResultResource>(
+                    $"Subject {sub} does not have permission to perform {privilege} for {associationUri}");
             }
         }
     }

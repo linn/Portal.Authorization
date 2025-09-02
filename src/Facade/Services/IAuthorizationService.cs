@@ -4,9 +4,10 @@
     using System.Threading.Tasks;
 
     using Linn.Common.Facade;
+    using Linn.Portal.Authorization.Resources;
 
     public interface IAuthorizationService
     {
-        Task<IResult<bool>> HasPermissionFor(string sub, string privilege, Uri resource);
+        Task<IResult<AuthorizationQueryResultResource>> HasPermissionFor(string sub, string privilege, Uri associationUri);
     }
 }

@@ -13,7 +13,7 @@
         {
             return services
                 .AddSingleton<IHandler, JsonResultHandler<SubjectResource>>()
-                .AddSingleton<IHandler, JsonResultHandler<bool>>();
+                .AddSingleton<IHandler, JsonResultHandler<AuthorizationQueryResultResource>>();
         }
     }
 }
