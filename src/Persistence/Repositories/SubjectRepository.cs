@@ -2,6 +2,7 @@ namespace Linn.Portal.Authorization.Persistence.Repositories
 {
     using System;
     using System.Linq;
+    using System.Threading.Tasks;
 
     using Linn.Portal.Authorization.Domain;
     using Linn.Portal.Authorization.Persistence;
@@ -17,12 +18,17 @@ namespace Linn.Portal.Authorization.Persistence.Repositories
             this.serviceDbContext = serviceDbContext;
         }
 
-        public Subject GetById(string sub)
+        public async Task<Subject> GetById(string sub)
         {
-            return this.serviceDbContext.Subjects
+            return await this.serviceDbContext.Subjects
                 .Include(x => x.Permissions).ThenInclude(p => p.Privilege)
                 .Include(x => x.Associations)
-                .FirstOrDefault(x => x.Sub == Guid.Parse(sub));
+                .FirstOrDefaultAsync(x => x.Sub == Guid.Parse(sub));
+        }
+
+        public async Task AddSubject(Subject toAdd)
+        {
+            await this.serviceDbContext.Subjects.AddAsync(toAdd);
         }
     }
 }

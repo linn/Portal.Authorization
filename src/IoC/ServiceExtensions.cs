@@ -1,6 +1,7 @@
 ﻿namespace Linn.Portal.Authorization.IoC
 {
     using Linn.Common.Rendering;
+    using Linn.Portal.Authorization.Facade.Services;
 
     using Microsoft.Extensions.DependencyInjection;
 
@@ -10,7 +11,7 @@
     {
         public static IServiceCollection AddFacadeServices(this IServiceCollection services)
         {
-            return services;
+            return services.AddScoped<ISubjectService, SubjectService>();
         }
 
         public static IServiceCollection AddServices(this IServiceCollection services)
