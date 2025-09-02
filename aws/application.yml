@@ -137,7 +137,7 @@ Resources:
           Image: !Sub docker.io/linn/portal-authorization:${dockerTag}
           PortMappings:
             - ContainerPort: 5050
-          Memory: '500'
+          Memory: !If [isTesting, '150', '300']
           HealthCheck:
             Command:
               - "CMD-SHELL"
