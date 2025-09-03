@@ -7,8 +7,8 @@
     using FluentAssertions;
 
     using Linn.Portal.Authorization.Domain;
+    using Linn.Portal.Authorization.Integration.Tests.Extensions;
     using Linn.Portal.Authorization.Resources;
-
     using NSubstitute;
 
     using NUnit.Framework;
@@ -48,6 +48,16 @@
         public void ShouldReturnUnauthorized()
         {
             this.Response.StatusCode.Should().Be(HttpStatusCode.Unauthorized);
+        }
+
+        [Test]
+        public void ShouldReturnBody()
+        {
+            var res = this.Response.DeserializeBody<AuthorizationQueryResultResource>();
+
+            res.IsAuthorized.Should().BeFalse();
+            res.Message.Should().Be(
+                $"Subject {this.subject.Sub.ToString()} does not have permission to perform {AuthorisedActions.ViewInvoices} for /retailers/123");
         }
     }
 }

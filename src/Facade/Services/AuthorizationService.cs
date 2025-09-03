@@ -27,7 +27,11 @@
             else
             {
                 return new UnauthorisedResult<AuthorizationQueryResultResource>(
-                    $"Subject {sub} does not have permission to perform {privilege} for {associationUri}");
+                    new AuthorizationQueryResultResource
+                        {
+                            IsAuthorized = false,
+                            Message = $"Subject {sub} does not have permission to perform {privilege} for {associationUri}"
+                    });
             }
         }
     }   
