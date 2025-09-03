@@ -42,7 +42,6 @@ namespace Linn.Portal.Authorization.Service.Host
             services.AddSingleton<IResponseNegotiator, UniversalResponseNegotiator>();
 
             services.AddDefaultAWSOptions(this.configuration.GetAWSOptions());
-            services.AddAWSService<IAmazonSQS>();
             services.AddLog();
 
             services.AddServices();

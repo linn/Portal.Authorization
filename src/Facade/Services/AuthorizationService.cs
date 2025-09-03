@@ -30,5 +30,5 @@
                     $"Subject {sub} does not have permission to perform {privilege} for {associationUri}");
             }
         }
-    }
+    }   
 }
