@@ -4,9 +4,7 @@
     using System.Net.Http;
 
     using Linn.Common.Service;
-    using Linn.Common.Service;
-    using Linn.Common.Service.Extensions;
-
+    
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.Http;
@@ -32,6 +30,8 @@
                         app =>
                             {
                                 app.UseRouting();
+                                app.UseAuthentication();
+                                app.UseAuthorization(); 
                                 app.UseEndpoints(
                                     builder =>
                                         {
