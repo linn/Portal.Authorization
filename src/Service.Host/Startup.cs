@@ -2,9 +2,7 @@ namespace Linn.Portal.Authorization.Service.Host
 {
     using System.IdentityModel.Tokens.Jwt;
     using System.IO;
-
-    using Amazon.SQS;
-
+    
     using Linn.Common.Authentication.Host.Extensions;
     using Linn.Common.Logging;
     using Linn.Common.Service;
@@ -13,6 +11,7 @@ namespace Linn.Portal.Authorization.Service.Host
     using Linn.Portal.Authorization.Service.Host.Negotiators;
     using Linn.Portal.Authorization.Service.Models;
 
+    using Microsoft.AspNetCore.Authentication.JwtBearer;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Diagnostics;
     using Microsoft.AspNetCore.Hosting;
@@ -21,6 +20,7 @@ namespace Linn.Portal.Authorization.Service.Host
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.FileProviders;
     using Microsoft.Extensions.Hosting;
+    using Microsoft.IdentityModel.Tokens;
 
     public class Startup
     {
@@ -49,13 +49,30 @@ namespace Linn.Portal.Authorization.Service.Host
             services.AddPersistence();  
             services.AddHandlers();
 
-            services.AddLinnAuthentication(
-                options =>
+            var appSettings = ApplicationSettings.Get();
+            var authority = appSettings.AuthorityUri;
+            
+            services.AddAuthentication(options =>
                     {
-                        options.Authority = ApplicationSettings.Get().AuthorityUri;
-                        options.CallbackPath = new PathString("/portal-authorization/signin-oidc");
-                        options.CookiePath = "/portal-authorization";
+                        options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                        options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+                    })
+                .AddJwtBearer(options =>
+                    {
+                        options.Authority = authority;
+
+                        options.TokenValidationParameters = new TokenValidationParameters
+                                                                {
+                                                                    ValidateIssuer = true,
+                                                                    ValidIssuer = authority,
+                                                                    ValidateAudience = false,
+                                                                    ValidAudience = "64fbgrkkslt1choig1e8km1g45",
+                                                                    ValidateLifetime = true,
+                                                                    ValidateIssuerSigningKey = true
+                                                                };
                     });
+            
+            services.AddAuthorization();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
