@@ -7,7 +7,6 @@
     using Linn.Common.Facade;
     using Linn.Common.Service;
     using Linn.Common.Service.Extensions;
-    using Linn.Portal.Authorization.Domain.Exceptions;
     using Linn.Portal.Authorization.Facade.Services;
     using Linn.Portal.Authorization.Resources;
 
@@ -65,7 +64,7 @@
             if (sub != subjectId)
             {
                 res.StatusCode = StatusCodes.Status401Unauthorized;
-                await res.WriteAsync("Not authenticated");
+                await res.WriteAsync($"Not authorised to access subject {subjectId}");
                 return;
             }
 
