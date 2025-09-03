@@ -39,6 +39,7 @@
                 return new BadRequestResult<SubjectResource>(ex.Message);
             }
         }
+        
         public async Task<IResult<SubjectResource>> GetSubject(string sub)
         {
             var subject = await this.subjectRepository.GetById(sub);

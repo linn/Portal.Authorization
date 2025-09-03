@@ -36,7 +36,7 @@
             this.Client = TestClient.With<SubjectModule>(
                 services =>
                     {
-                        // need all this so that endpoints require auth can be tested properly
+                        // need all this so that endpoints that require auth can be tested properly
                         services.AddAuthentication(options =>
                                 {
                                     options.DefaultAuthenticateScheme = TestAuthHandler.AuthenticationScheme;
