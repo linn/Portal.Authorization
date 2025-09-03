@@ -3,12 +3,13 @@ namespace Linn.Portal.Authorization.Service.Host
     using System.IdentityModel.Tokens.Jwt;
     using System.IO;
 
+    using Amazon.SQS;
+
     using Linn.Common.Authentication.Host.Extensions;
     using Linn.Common.Logging;
     using Linn.Common.Service;
     using Linn.Common.Service.Extensions;
     using Linn.Portal.Authorization.IoC;
-    using Linn.Portal.Authorization.IoC.Logging.AmazonSQS;
     using Linn.Portal.Authorization.Service.Host.Negotiators;
     using Linn.Portal.Authorization.Service.Models;
 
@@ -16,12 +17,20 @@ namespace Linn.Portal.Authorization.Service.Host
     using Microsoft.AspNetCore.Diagnostics;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.Http;
+    using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.FileProviders;
     using Microsoft.Extensions.Hosting;
 
     public class Startup
     {
+        private readonly IConfiguration configuration;
+
+        public Startup(IConfiguration configuration)
+        {
+            this.configuration = configuration;
+        }
+
         public void ConfigureServices(IServiceCollection services)
         {
             JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
@@ -31,16 +40,14 @@ namespace Linn.Portal.Authorization.Service.Host
             services.AddSingleton<IResponseNegotiator, HtmlNegotiator>();
             services.AddSingleton<IResponseNegotiator, UniversalResponseNegotiator>();
 
-            services.AddCredentialsExtensions();
-            services.AddSQSExtensions();
+            services.AddDefaultAWSOptions(this.configuration.GetAWSOptions());
             services.AddLog();
 
             services.AddServices();
             services.AddFacadeServices();
             services.AddBuilders();
-            services.AddPersistence();
+            services.AddPersistence();  
             services.AddHandlers();
-            services.AddMessageDispatchers();
 
             services.AddLinnAuthentication(
                 options =>

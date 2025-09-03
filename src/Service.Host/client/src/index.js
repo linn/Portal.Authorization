@@ -22,7 +22,7 @@ const oidcConfig = {
     client_id: 'app2',
     response_type: 'code',
     scope: 'openid profile email associations',
-    redirect_uri: `${host}/portal-authorization/`,
+    redirect_uri: `${host}/portal-authorization`,
     post_logout_redirect_uri: `${config.proxyRoot}/authentication/Account/Logout`,
     onSigninCallback: () => {
         const redirect = sessionStorage.getItem('auth:redirect');

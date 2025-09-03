@@ -12,7 +12,8 @@
         public static IServiceCollection AddHandlers(this IServiceCollection services)
         {
             return services
-                .AddSingleton<IHandler, JsonResultHandler<ProcessResultResource>>();
+                .AddSingleton<IHandler, JsonResultHandler<SubjectResource>>()
+                .AddSingleton<IHandler, JsonResultHandler<AuthorizationQueryResultResource>>();
         }
     }
 }

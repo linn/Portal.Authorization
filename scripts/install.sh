@@ -10,3 +10,8 @@ nvm install 22 >/dev/null 2>&1
 nvm use 22 >/dev/null 2>&1
 
 echo "Using Node version: $(node -v)"
+
+cd ./src/Service.Host
+npm ci
+npm run build
+cd ../../

@@ -5,10 +5,7 @@ source ./scripts/install.sh
 
 # c# tests
 dotnet test ./tests/Unit/Domain.Tests/Domain.Tests.csproj
-dotnet test ./tests/Unit/Domain.LinnApps.Tests/Domain.LinnApps.Tests.csproj
 dotnet test ./tests/Unit/Facade.Tests/Facade.Tests.csproj
-dotnet test ./tests/Unit/Messaging.Tests/Messaging.Tests.csproj
-dotnet test ./tests/Unit/Proxy.Tests/Proxy.Tests.csproj
 dotnet test ./tests/Integration/Integration.Tests/Integration.Tests.csproj
 
 echo $?
@@ -19,7 +16,7 @@ fi
 
 # javascript tests
 cd ./src/Service.Host
-./node_modules/.bin/jest
+npm test
 echo $?
 result=$?
 cd ../..

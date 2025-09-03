@@ -16,8 +16,8 @@ fi
 
 # create docker image(s)
 docker login -u $DOCKER_HUB_USERNAME -p $DOCKER_HUB_PASSWORD
-docker build --no-cache -t linn/portalAuthorization:$TRAVIS_BUILD_NUMBER --build-arg gitBranch=$GIT_BRANCH ./src/Service.Host/
+docker build --no-cache -t linn/portal-authorization:$TRAVIS_BUILD_NUMBER --build-arg gitBranch=$GIT_BRANCH ./src/Service.Host/
 
 
 # push to dockerhub 
-docker push linn/portalAuthorization:$TRAVIS_BUILD_NUMBER
+docker push linn/portal-authorization:$TRAVIS_BUILD_NUMBER
