@@ -10,7 +10,6 @@ namespace Linn.Portal.Authorization.Service.Host
     using Linn.Common.Service;
     using Linn.Common.Service.Extensions;
     using Linn.Portal.Authorization.IoC;
-    using Linn.Portal.Authorization.IoC.Logging.AmazonSQS;
     using Linn.Portal.Authorization.Service.Host.Negotiators;
     using Linn.Portal.Authorization.Service.Models;
 
