@@ -11,7 +11,9 @@
     {
         public static IServiceCollection AddFacadeServices(this IServiceCollection services)
         {
-            return services.AddScoped<ISubjectService, SubjectService>();
+            return services
+                .AddScoped<ISubjectService, SubjectService>()
+                .AddScoped<IAuthorizationService, AuthorizationService>();
         }
 
         public static IServiceCollection AddServices(this IServiceCollection services)
