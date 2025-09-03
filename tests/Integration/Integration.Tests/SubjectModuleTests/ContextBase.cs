@@ -36,16 +36,6 @@
             this.Client = TestClient.With<SubjectModule>(
                 services =>
                     {
-                        // need all this so that endpoints that require auth can be tested properly
-                        services.AddAuthentication(options =>
-                                {
-                                    options.DefaultAuthenticateScheme = TestAuthHandler.AuthenticationScheme;
-                                    options.DefaultChallengeScheme = TestAuthHandler.AuthenticationScheme;
-                                })
-                            .AddScheme<AuthenticationSchemeOptions, TestAuthHandler>(
-                                TestAuthHandler.AuthenticationScheme, _ => { });
-
-                        services.AddAuthorization();
                         services.AddSingleton(facadeService);
                         services.AddHandlers();
                         services.AddRouting();
