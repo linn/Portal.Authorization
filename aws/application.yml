@@ -1,6 +1,7 @@
 ---
 Description: Template
 AWSTemplateFormatVersion: '2010-09-09'
+
 Parameters:
   dockerTag:
     Type: String
@@ -57,6 +58,15 @@ Conditions:
     - !Equals [!Ref environmentSuffix, "-sys"]
 
 Resources:
+
+  ### Pre-created CloudWatch log group ###
+  portalAuthorizationLogGroup:
+    Type: AWS::Logs::LogGroup
+    Properties:
+      LogGroupName: !Sub "/ecs/portal-authorization${environmentSuffix}"
+      RetentionInDays: 30
+
+  ### ECS Task Role ###
   portalAuthorizationRole:
     Type: AWS::IAM::Role
     Properties:
@@ -113,11 +123,11 @@ Resources:
             Statement:
               - Effect: Allow
                 Action:
-                  - logs:CreateLogGroup
                   - logs:CreateLogStream
                   - logs:PutLogEvents
-                Resource: !Sub "arn:aws:logs:${AWS::Region}:${AWS::AccountId}:log-group:/ecs/portal-authorization*"
+                Resource: !Sub "arn:aws:logs:${AWS::Region}:${AWS::AccountId}:log-group:/ecs/portal-authorization${environmentSuffix}:*"
 
+  ### ECS Task Definition ###
   portalAuthorizationTaskDefinition:
     Type: AWS::ECS::TaskDefinition
     Properties:
@@ -149,7 +159,7 @@ Resources:
           LogConfiguration:
             LogDriver: awslogs
             Options:
-              awslogs-group: !Sub "/ecs/portal-authorization${environmentSuffix}"
+              awslogs-group: !Ref portalAuthorizationLogGroup
               awslogs-region: !Ref AWS::Region
               awslogs-stream-prefix: portalAuthorization
           Environment:
@@ -186,6 +196,7 @@ Resources:
                 Fn::ImportValue:
                   !Sub "kms-key-alias${environmentSuffix}"
 
+  ### ECS Service ###
   portalAuthorizationService:
     Type: AWS::ECS::Service
     Properties:
