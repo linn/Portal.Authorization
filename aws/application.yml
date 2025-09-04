@@ -107,6 +107,17 @@ Resources:
                 Action:
                   - s3:*
                 Resource: !Sub "arn:aws:s3:::auth${environmentSuffix}*-keysbucket*"
+        - PolicyName: cloudwatchLogs
+          PolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+              - Effect: Allow
+                Action:
+                  - logs:CreateLogGroup
+                  - logs:CreateLogStream
+                  - logs:PutLogEvents
+                Resource: !Sub "arn:aws:logs:${AWS::Region}:${AWS::AccountId}:log-group:/ecs/portal-authorization*"
+
   portalAuthorizationTaskDefinition:
     Type: AWS::ECS::TaskDefinition
     Properties:
@@ -174,6 +185,7 @@ Resources:
               Value:
                 Fn::ImportValue:
                   !Sub "kms-key-alias${environmentSuffix}"
+
   portalAuthorizationService:
     Type: AWS::ECS::Service
     Properties:
@@ -184,7 +196,6 @@ Resources:
           Value: "IT"
         - Key: AppManagerCFNStackKey
           Value: !Sub ${AWS::StackId}
-      # Have to use long form conditional
       Cluster: !If
         - isTesting
         - !Sub ${TestClusterName}
