@@ -1,5 +1,7 @@
 ﻿namespace Linn.Portal.Authorization.Service.Modules
 {
+    using System;
+    using System.Linq;
     using System.Threading.Tasks;
 
     using Linn.Common.Configuration;
@@ -18,6 +20,7 @@
         public void MapEndpoints(IEndpointRouteBuilder endpoints)
         {
             endpoints.MapPost("/portal-authorization/subjects", this.PostSubject);
+            endpoints.MapGet("/portal-authorization/subjects/{subjectId}", this.GetSubject);
         }
 
         private async Task PostSubject(
@@ -38,6 +41,39 @@
 
                 await res.Negotiate(result);
             }
+        }
+        
+        private async Task GetSubject(
+            HttpRequest req,
+            HttpResponse res,
+            string subjectId,
+            ISubjectService service)
+        {
+            var user = req.HttpContext.User;
+
+            // we only want to service the request if the subjectId for which information is requested
+            // matches the value of the sub claim for the authenticated user
+            if (user.Identity?.IsAuthenticated != true)
+            {
+                res.StatusCode = StatusCodes.Status401Unauthorized;
+                await res.WriteAsync("Not authenticated");
+                return;
+            }
+
+            var sub = user.Claims.FirstOrDefault(c => c.Type == "sub")?.Value;
+
+            Console.WriteLine("sub is " + sub);
+
+            if (sub != subjectId)
+            {
+                res.StatusCode = StatusCodes.Status401Unauthorized;
+                await res.WriteAsync($"Not authorised to access subject {subjectId}");
+                return;
+            }
+            Console.WriteLine("calling service");
+
+            var result = await service.GetSubject(sub);
+            await res.Negotiate(result);
         }
     }
 }

@@ -9,6 +9,7 @@
     using Linn.Portal.Authorization.Persistence.Repositories;
     using Linn.Portal.Authorization.Service.Modules;
 
+    using Microsoft.AspNetCore.Authentication;
     using Microsoft.Extensions.DependencyInjection;
 
     using NSubstitute;
@@ -34,11 +35,11 @@
 
             this.Client = TestClient.With<SubjectModule>(
                 services =>
-                {
-                    services.AddSingleton(facadeService);
-                    services.AddHandlers();
-                    services.AddRouting();
-                });
+                    {
+                        services.AddSingleton(facadeService);
+                        services.AddHandlers();
+                        services.AddRouting();
+                    });
         }
     }
 }

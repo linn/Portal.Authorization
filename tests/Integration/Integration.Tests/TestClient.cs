@@ -4,9 +4,9 @@
     using System.Net.Http;
 
     using Linn.Common.Service;
-    using Linn.Common.Service;
-    using Linn.Common.Service.Extensions;
+    using Linn.Portal.Authorization.Integration.Tests.SubjectModuleTests;
 
+    using Microsoft.AspNetCore.Authentication;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.Http;
@@ -27,11 +27,23 @@
                             services.AddRouting();
                             services.Apply(serviceConfiguration);
                             services.AddSingleton<IResponseNegotiator, UniversalResponseNegotiator>();
+                            // need all this so that endpoints that require auth can be tested properly
+                            services.AddAuthentication(options =>
+                                    {
+                                        options.DefaultAuthenticateScheme = TestAuthHandler.AuthenticationScheme;
+                                        options.DefaultChallengeScheme = TestAuthHandler.AuthenticationScheme;
+                                    })
+                                .AddScheme<AuthenticationSchemeOptions, TestAuthHandler>(
+                                    TestAuthHandler.AuthenticationScheme, _ => { });
+
+                            services.AddAuthorization();
                         })
                     .Configure(
                         app =>
                             {
                                 app.UseRouting();
+                                app.UseAuthentication();
+                                app.UseAuthorization(); 
                                 app.UseEndpoints(
                                     builder =>
                                         {

@@ -8,5 +8,7 @@
     public interface ISubjectService
     {
         Task<IResult<SubjectResource>> AddSubject(string sub);
+        
+        Task<IResult<SubjectResource>> GetSubject(string sub);
     }
 }

@@ -1,6 +1,8 @@
 ﻿namespace Linn.Portal.Authorization.Resources
 {
-    public class SubjectResource
+    using Linn.Common.Resources;
+
+    public class SubjectResource : HypermediaResource
     {
         public string Sub { get; set; }
     }

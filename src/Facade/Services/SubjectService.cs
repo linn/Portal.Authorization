@@ -1,10 +1,12 @@
 ﻿namespace Linn.Portal.Authorization.Facade.Services
 {
     using System;
+    using System.Linq;
     using System.Threading.Tasks;
 
     using Linn.Common.Facade;
     using Linn.Common.Persistence;
+    using Linn.Common.Resources;
     using Linn.Portal.Authorization.Domain;
     using Linn.Portal.Authorization.Persistence.Repositories;
     using Linn.Portal.Authorization.Resources;
@@ -36,6 +38,26 @@
             {
                 return new BadRequestResult<SubjectResource>(ex.Message);
             }
+        }
+        
+        public async Task<IResult<SubjectResource>> GetSubject(string sub)
+        {
+            var subject = await this.subjectRepository.GetById(sub);
+
+            Console.WriteLine("got subject with id: " + subject?.Sub.ToString());
+            
+            return new SuccessResult<SubjectResource>(
+                new SubjectResource
+                    {
+                        Sub = subject.Sub.ToString(),
+                        Links = subject.Associations
+                            ?.Select(
+                                a => new LinkResource
+                                         {
+                                             Rel = "association", Href = a.AssociatedResource.ToString()
+                                         })
+                            .ToArray()
+                    });
         }
     }
 }
