@@ -70,6 +70,23 @@ namespace Linn.Portal.Authorization.Service.Host
                                                                     ValidateLifetime = true,
                                                                     ValidateIssuerSigningKey = true
                                                                 };
+
+                        options.Events = new JwtBearerEvents
+                                             {
+                                                 OnAuthenticationFailed = context =>
+                                                     {
+                                                         if (context.Exception is SecurityTokenExpiredException)
+                                                         {
+                                                             context.Response.StatusCode = StatusCodes.Status401Unauthorized;
+                                                             context.Response.ContentType = "text/plain";
+                                                             return context.Response.WriteAsync("Token expired");
+                                                         }
+
+                                                         context.Response.StatusCode = StatusCodes.Status401Unauthorized;
+                                                         context.Response.ContentType = "text/plain";
+                                                         return context.Response.WriteAsync("Authentication failed");
+                                                     }
+                                             };
                     });
             
             services.AddAuthorization();
