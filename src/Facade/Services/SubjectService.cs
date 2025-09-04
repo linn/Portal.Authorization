@@ -43,13 +43,15 @@
         public async Task<IResult<SubjectResource>> GetSubject(string sub)
         {
             var subject = await this.subjectRepository.GetById(sub);
+
+            Console.WriteLine("got subject with id: " + subject?.Sub.ToString());
             
             return new SuccessResult<SubjectResource>(
                 new SubjectResource
                     {
                         Sub = subject.Sub.ToString(),
                         Links = subject.Associations
-                            .Select(
+                            ?.Select(
                                 a => new LinkResource
                                          {
                                              Rel = "association", Href = a.AssociatedResource.ToString()

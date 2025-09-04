@@ -1,5 +1,6 @@
 ﻿namespace Linn.Portal.Authorization.Service.Modules
 {
+    using System;
     using System.Linq;
     using System.Threading.Tasks;
 
@@ -61,12 +62,15 @@
 
             var sub = user.Claims.FirstOrDefault(c => c.Type == "sub")?.Value;
 
+            Console.WriteLine("sub is " + sub);
+
             if (sub != subjectId)
             {
                 res.StatusCode = StatusCodes.Status401Unauthorized;
                 await res.WriteAsync($"Not authorised to access subject {subjectId}");
                 return;
             }
+            Console.WriteLine("calling service");
 
             var result = await service.GetSubject(sub);
             await res.Negotiate(result);
