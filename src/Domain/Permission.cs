@@ -1,5 +1,7 @@
 ﻿namespace Linn.Portal.Authorization.Domain
 {
+    using Linn.Portal.Authorization.Domain.Exceptions;
+
     public class Permission
     {
         public Permission(Privilege privilege, Subject sub, Association association)
@@ -8,6 +10,12 @@
             this.Privilege = privilege;
             this.IsActive = true;
             this.Association = association;
+
+            if (this.Association.Type != this.Privilege.ScopeType)
+            {
+                throw new CreatePermissionException(
+                    $"{privilege.Action} is only applicable to associations of type {privilege.ScopeType}");
+            }
         }
 
         public Permission()
