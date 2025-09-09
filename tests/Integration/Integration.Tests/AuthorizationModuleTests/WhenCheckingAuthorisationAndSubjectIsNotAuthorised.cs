@@ -25,9 +25,9 @@
             var guid = Guid.NewGuid();
             var retailerUri = new Uri("/retailers/123", UriKind.RelativeOrAbsolute);
             this.subject = new Subject(guid.ToString());
-            var association = new Association(this.subject, retailerUri);
-            var privilege = new Privilege(AuthorisedActions.ViewInvoices);
-            var permission = new Permission(privilege, this.subject);
+            var association = new Association(this.subject, retailerUri, "retailer");
+            var privilege = new Privilege(AuthorisedActions.ViewInvoices, association.Type);
+            var permission = new Permission(privilege, this.subject, association);
             this.subject.AddAssociation(association);
 
             this.resource = new AuthorisationQueryResource
