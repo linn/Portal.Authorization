@@ -49,30 +49,7 @@
             string subjectId,
             ISubjectService service)
         {
-            var user = req.HttpContext.User;
-
-            // we only want to service the request if the subjectId for which information is requested
-            // matches the value of the sub claim for the authenticated user
-            if (user.Identity?.IsAuthenticated != true)
-            {
-                res.StatusCode = StatusCodes.Status401Unauthorized;
-                await res.WriteAsync("Not authenticated");
-                return;
-            }
-
-            var sub = user.Claims.FirstOrDefault(c => c.Type == "sub")?.Value;
-
-            Console.WriteLine("sub is " + sub);
-
-            if (sub != subjectId)
-            {
-                res.StatusCode = StatusCodes.Status401Unauthorized;
-                await res.WriteAsync($"Not authorised to access subject {subjectId}");
-                return;
-            }
-            Console.WriteLine("calling service");
-
-            var result = await service.GetSubject(sub);
+            var result = await service.GetSubject(subjectId);
             await res.Negotiate(result);
         }
     }

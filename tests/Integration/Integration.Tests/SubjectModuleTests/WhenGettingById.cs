@@ -37,8 +37,6 @@ namespace Linn.Portal.Authorization.Integration.Tests.SubjectModuleTests
             
             this.Repository.GetById(this.subjectId.ToString()).Returns(this.subject);
             
-            TestAuthHandler.SubClaimValue = this.subjectId.ToString();
-
             this.Response = this.Client.Get(
                 $"/portal-authorization/subjects/{this.subjectId.ToString()}",
                 with =>
