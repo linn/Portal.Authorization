@@ -55,7 +55,7 @@ namespace Linn.Portal.Authorization.Integration.Tests.SubjectModuleTests
         public void ShouldBuildLinks()
         {
             var res = this.Response.DeserializeBody<SubjectResource>();
-            res.Links.Single(x => x.Rel == "association").Href.Should().Be(this.retailerUri.ToString());
+            res.Links.Single(x => x.Rel == "associated-retailer").Href.Should().Be(this.retailerUri.ToString());
         }
     }
 }
