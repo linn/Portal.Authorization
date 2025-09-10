@@ -29,9 +29,9 @@ namespace Linn.Portal.Authorization.Integration.Tests.SubjectModuleTests
             this.retailerUri = new Uri("/retailers/123", UriKind.RelativeOrAbsolute);
 
             this.subject = new Subject(this.subjectId.ToString());
-            var association = new Association(this.subject, this.retailerUri);
-            var privilege = new Privilege(AuthorisedActions.ViewInvoices);
-            var permission = new Permission(privilege, this.subject);
+            var association = new Association(this.subject, this.retailerUri, "retailer");
+            var privilege = new Privilege(AuthorisedActions.ViewInvoices, association.Type);
+            var permission = new Permission(privilege, this.subject, association);
             this.subject.AddAssociation(association);
             this.subject.AddPermission(permission);
             
@@ -55,7 +55,7 @@ namespace Linn.Portal.Authorization.Integration.Tests.SubjectModuleTests
         public void ShouldBuildLinks()
         {
             var res = this.Response.DeserializeBody<SubjectResource>();
-            res.Links.Single(x => x.Rel == "association").Href.Should().Be(this.retailerUri.ToString());
+            res.Links.Single(x => x.Rel == "associated-retailer").Href.Should().Be(this.retailerUri.ToString());
         }
     }
 }

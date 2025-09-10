@@ -23,15 +23,13 @@
         
         public ICollection<Permission> Permissions { get; protected set; }
 
-        public bool HasPermissionFor(string privilege, Uri resource)
+        public bool HasPermissionFor(string attemptedAction, Uri associationUri)
         {
-            var hasAssociation = this.Associations.Any(a => a.AssociatedResource == resource);
-            var hasPrivilege = this.Permissions.Any(p =>
+            return this.Permissions.Any(p =>
                 p.IsActive &&
                 p.Privilege.IsActive &&
-                p.Privilege.Action == privilege);
-
-            return hasAssociation && hasPrivilege;
+                p.Privilege.Action == attemptedAction
+                && p.Association.AssociatedResource == associationUri);
         }
 
         public void AddAssociation(Association toAdd)

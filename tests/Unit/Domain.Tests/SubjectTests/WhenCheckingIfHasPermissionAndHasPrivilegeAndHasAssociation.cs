@@ -18,11 +18,11 @@
             this.retailerUri = new Uri("/retailers/123", UriKind.RelativeOrAbsolute);
             this.sut = new Subject(Guid.NewGuid().ToString());
 
-            var association = new Association(this.sut, this.retailerUri);
+            var association = new Association(this.sut, this.retailerUri, "retailer");
 
-            var privilege = new Privilege(AuthorisedActions.ViewInvoices);
+            var privilege = new Privilege(AuthorisedActions.ViewInvoices, association.Type);
 
-            var permission = new Permission(privilege, this.sut);
+            var permission = new Permission(privilege, this.sut, association);
 
             this.sut.AddAssociation(association);
             this.sut.AddPermission(permission);
