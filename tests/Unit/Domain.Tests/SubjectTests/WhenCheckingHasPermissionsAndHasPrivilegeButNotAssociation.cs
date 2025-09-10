@@ -6,6 +6,8 @@
 
     using NUnit.Framework;
 
+    using TestData;
+
     public class WhenCheckingHasPermissionsAndHasPrivilegeButNotAssociation
     {
         private Subject sut;
@@ -23,7 +25,8 @@
             var permission = new Permission(
                 privilege,
                 this.sut,
-                new Association(this.sut, new Uri("/retailers/456", UriKind.RelativeOrAbsolute), "retailer"));
+                new Association(this.sut, new Uri("/retailers/456", UriKind.RelativeOrAbsolute), "retailer"),
+                new TestPermissionCreatorSubject());
 
             this.sut.AddPermission(permission);
         }

@@ -13,6 +13,8 @@
 
     using NUnit.Framework;
 
+    using TestData;
+
     public class WhenCheckingAuthorisationAndSubjectIsAuthorised : ContextBase
     {
         private AuthorisationQueryResource resource;
@@ -27,7 +29,7 @@
             this.subject = new Subject(guid.ToString());
             var association = new Association(this.subject, retailerUri, "retailer");
             var privilege = new Privilege(AuthorisedActions.ViewInvoices, association.Type);
-            var permission = new Permission(privilege, this.subject, association);
+            var permission = new Permission(privilege, this.subject, association, new TestPermissionCreatorSubject());
             this.subject.AddAssociation(association);
             this.subject.AddPermission(permission);
 

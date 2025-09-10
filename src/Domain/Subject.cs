@@ -25,11 +25,29 @@
 
         public bool HasPermissionFor(string attemptedAction, Uri associationUri)
         {
+            if (this.Permissions == null || !this.Permissions.Any())
+            {
+                return false;
+            }
+
+            // are we trying to assign a subject the power to create permissions?
+            if (attemptedAction == AuthorisedActions.CreatePermission)
+            {
+                // if so need the special admin privilege
+                if (this.Permissions.Any(
+                        x => x.Privilege.Action == AuthorisedActions.AuthAdmin && x.Privilege.IsActive))
+                {
+                    return true;
+                }
+
+                return false;
+            }
+
             return this.Permissions.Any(p =>
                 p.IsActive &&
                 p.Privilege.IsActive &&
                 p.Privilege.Action == attemptedAction
-                && p.Association.AssociatedResource == associationUri);
+                && p.Association?.AssociatedResource == associationUri);
         }
 
         public void AddAssociation(Association toAdd)

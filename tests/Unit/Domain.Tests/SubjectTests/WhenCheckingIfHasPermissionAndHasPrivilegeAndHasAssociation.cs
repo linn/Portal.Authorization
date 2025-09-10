@@ -6,6 +6,8 @@
 
     using NUnit.Framework;
 
+    using TestData;
+
     public class WhenCheckingIfHasPermissionAndHasPrivilegeAndHasAssociation
     {
         private Subject sut;
@@ -22,10 +24,10 @@
 
             var privilege = new Privilege(AuthorisedActions.ViewInvoices, association.Type);
 
-            var permission = new Permission(privilege, this.sut, association);
+            var viewInvoicesPermission = new Permission(privilege, this.sut, association, new TestPermissionCreatorSubject());
 
             this.sut.AddAssociation(association);
-            this.sut.AddPermission(permission);
+            this.sut.AddPermission(viewInvoicesPermission);
         }
 
         [Test]

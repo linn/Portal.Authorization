@@ -21,7 +21,7 @@
 
             this.act = () =>
                 {
-                    new Permission(privilege, sub, association);
+                    new Permission(privilege, sub, association, new Subject());
                 };
         }
 

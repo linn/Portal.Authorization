@@ -4,7 +4,7 @@
 
     public class Permission
     {
-        public Permission(Privilege privilege, Subject sub, Association association)
+        public Permission(Privilege privilege, Subject sub, Association association, Subject grantedBy)
         {
             this.Subject = sub;
             this.Privilege = privilege;
@@ -16,6 +16,14 @@
                 throw new CreatePermissionException(
                     $"{privilege.Action} is only applicable to associations of type {privilege.ScopeType}");
             }
+
+            if (!grantedBy.HasPermissionFor(AuthorisedActions.CreatePermission, association.AssociatedResource))
+            {
+                throw new UnauthorisedActionException(
+                    $"Subject {grantedBy.Sub} does not have permission to create permissions associated to {association.AssociatedResource}");
+            }
+
+            this.GrantedBy = grantedBy;
         }
 
         public Permission()
@@ -27,6 +35,8 @@
         public Privilege Privilege { get; set; }
 
         public Subject Subject { get; set; }
+
+        public Subject GrantedBy { get; set; }
 
         public Association Association { get; set; }
 
