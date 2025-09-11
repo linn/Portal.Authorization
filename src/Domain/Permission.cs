@@ -1,5 +1,7 @@
 ﻿namespace Linn.Portal.Authorization.Domain
 {
+    using System;
+
     using Linn.Portal.Authorization.Domain.Exceptions;
 
     public class Permission
@@ -49,5 +51,10 @@
         public Association Association { get; protected set; }
 
         public bool IsActive { get; protected set; }
+
+        // EF will use these for FK mapping, not visible in domain
+        private Guid SubjectId { get; set; }
+
+        private Guid GrantedById { get; set; }
     }
 }

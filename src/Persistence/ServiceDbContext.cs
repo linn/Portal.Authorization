@@ -24,8 +24,18 @@
             builder.Entity<Permission>().Property(p => p.Id).ValueGeneratedOnAdd();
             builder.Entity<Permission>().HasKey(p => p.Id);
 
+            builder.Entity<Permission>()
+                .HasOne(p => p.GrantedBy)
+                .WithMany()
+                .HasForeignKey("GrantedById")
+                .HasPrincipalKey(s => s.Sub)
+                .OnDelete(DeleteBehavior.Restrict);
+
             builder.Entity<Privilege>().Property(p => p.Id).ValueGeneratedOnAdd();
             builder.Entity<Privilege>().HasKey(p => p.Id);
+            builder.Entity<Privilege>()
+                .Property(p => p.ScopeType)
+                .HasConversion<string>();
 
             builder.Entity<Association>().Property(p => p.Id).ValueGeneratedOnAdd();
             builder.Entity<Association>().HasKey(p => p.Id);
@@ -33,6 +43,9 @@
                 .HasConversion(
                     v => v.ToString(),
                     v => new Uri(v, UriKind.RelativeOrAbsolute));
+            builder.Entity<Association>()
+                .Property(p => p.Type)
+                .HasConversion<string>();
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Linn.Portal.Authorization.Persistence.Migrations
 {
     [DbContext(typeof(ServiceDbContext))]
-    [Migration("20250909142752_first")]
-    partial class first
+    [Migration("20250911154814_1st")]
+    partial class _1st
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -43,6 +43,7 @@ namespace Linn.Portal.Authorization.Persistence.Migrations
                         .HasColumnType("uuid");
 
                     b.Property<string>("Type")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.HasKey("Id");
@@ -63,11 +64,17 @@ namespace Linn.Portal.Authorization.Persistence.Migrations
                     b.Property<int?>("AssociationId")
                         .HasColumnType("integer");
 
+                    b.Property<Guid>("GrantedById")
+                        .HasColumnType("uuid");
+
                     b.Property<bool>("IsActive")
                         .HasColumnType("boolean");
 
                     b.Property<int?>("PrivilegeId")
                         .HasColumnType("integer");
+
+                    b.Property<Guid>("SubjectId")
+                        .HasColumnType("uuid");
 
                     b.Property<Guid?>("SubjectSub")
                         .HasColumnType("uuid");
@@ -76,7 +83,11 @@ namespace Linn.Portal.Authorization.Persistence.Migrations
 
                     b.HasIndex("AssociationId");
 
+                    b.HasIndex("GrantedById");
+
                     b.HasIndex("PrivilegeId");
+
+                    b.HasIndex("SubjectId");
 
                     b.HasIndex("SubjectSub");
 
@@ -98,6 +109,7 @@ namespace Linn.Portal.Authorization.Persistence.Migrations
                         .HasColumnType("boolean");
 
                     b.Property<string>("ScopeType")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.HasKey("Id");
@@ -131,15 +143,29 @@ namespace Linn.Portal.Authorization.Persistence.Migrations
                         .WithMany()
                         .HasForeignKey("AssociationId");
 
+                    b.HasOne("Linn.Portal.Authorization.Domain.Subject", "GrantedBy")
+                        .WithMany()
+                        .HasForeignKey("GrantedById")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
                     b.HasOne("Linn.Portal.Authorization.Domain.Privilege", "Privilege")
                         .WithMany()
                         .HasForeignKey("PrivilegeId");
 
                     b.HasOne("Linn.Portal.Authorization.Domain.Subject", "Subject")
+                        .WithMany()
+                        .HasForeignKey("SubjectId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("Linn.Portal.Authorization.Domain.Subject", null)
                         .WithMany("Permissions")
                         .HasForeignKey("SubjectSub");
 
                     b.Navigation("Association");
+
+                    b.Navigation("GrantedBy");
 
                     b.Navigation("Privilege");
 
