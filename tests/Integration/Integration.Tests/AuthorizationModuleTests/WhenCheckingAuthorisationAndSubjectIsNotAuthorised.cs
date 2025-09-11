@@ -39,7 +39,7 @@
                                     Sub = guid.ToString()
                                 };
 
-            this.Repository.GetById(guid.ToString()).Returns(this.subject);
+            this.SubjectRepository.GetById(guid.ToString()).Returns(this.subject);
 
             this.Response = this.Client.PostAsJsonAsync(
                 "/portal-authorization/check-authorization",

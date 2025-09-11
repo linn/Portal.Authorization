@@ -9,5 +9,7 @@
     public interface IAuthorizationService
     {
         Task<IResult<AuthorizationQueryResultResource>> HasPermissionFor(string sub, string privilege, Uri associationUri);
+
+        Task<IResult<PermissionResource>> CreatePermission(PermissionResource toCreate);
     }
 }

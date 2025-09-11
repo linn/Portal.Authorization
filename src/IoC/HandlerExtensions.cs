@@ -13,7 +13,8 @@
         {
             return services
                 .AddSingleton<IHandler, JsonResultHandler<SubjectResource>>()
-                .AddSingleton<IHandler, JsonResultHandler<AuthorizationQueryResultResource>>();
+                .AddSingleton<IHandler, JsonResultHandler<AuthorizationQueryResultResource>>()
+                .AddSingleton<IHandler, JsonResultHandler<PermissionResource>>();
         }
     }
 }
