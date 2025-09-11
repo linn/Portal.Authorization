@@ -2,7 +2,7 @@
 {
     public class Privilege
     {
-        public Privilege(string action, string scopeType)
+        public Privilege(string action, AssociationType scopeType)
         {
             this.IsActive = true;
             this.Action = action;
@@ -19,6 +19,18 @@
 
         public bool IsActive { get; set; }
 
-        public string ScopeType { get; set; }
+        public AssociationType ScopeType { get; set; }
+
+        public bool AppliesToAssociation(Association association)
+        {
+            return this.ScopeType switch
+                {
+                    AssociationType.System => true,
+                    AssociationType.Retailer => association != null && association.Type == AssociationType.Retailer,
+                    AssociationType.Account => association != null && association.Type == AssociationType.Account,
+                    _ => false
+                };
+        }
+
     }
 }

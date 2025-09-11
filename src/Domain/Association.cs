@@ -4,7 +4,7 @@
 
     public class Association
     {
-        public Association(Subject sub, Uri associatedResource, string type)
+        public Association(Subject sub, Uri associatedResource, AssociationType type)
         {
             this.IsActive = true;
             this.Subject = sub;
@@ -24,6 +24,6 @@
 
         public int Id { get; protected set; }
 
-        public string Type { get; set; }
+        public AssociationType Type { get; set; }
     }
 }

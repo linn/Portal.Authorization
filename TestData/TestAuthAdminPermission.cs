@@ -4,14 +4,15 @@
 
     using Linn.Portal.Authorization.Domain;
 
-    public class TestPermissionCreatorPermission : Permission
+    public class TestAuthAdminPermission : Permission
     {
-        public TestPermissionCreatorPermission()
+        public TestAuthAdminPermission()
         {
             this.Subject = new Subject(new Guid().ToString());
             this.GrantedBy = null;
             this.Association = null;
-            this.Privilege = new Privilege(AuthorisedActions.AuthAdmin, null);
+            this.IsActive = true;
+            this.Privilege = new Privilege(AuthorisedActions.AuthAdmin, AssociationType.System);
         }
     }
 }

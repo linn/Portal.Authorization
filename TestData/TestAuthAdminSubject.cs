@@ -5,11 +5,11 @@
 
     using Linn.Portal.Authorization.Domain;
 
-    public class TestPermissionCreatorSubject : Subject
+    public class TestAuthAdminSubject : Subject
     {
-        public TestPermissionCreatorSubject(Association association)
+        public TestAuthAdminSubject()
         {
-            var permission = new TestCreatePermissionPermission(association);
+            var permission = new TestAuthAdminPermission();
             this.Sub = permission.Subject.Sub;
             this.Permissions = new List<Permission>
                                    {

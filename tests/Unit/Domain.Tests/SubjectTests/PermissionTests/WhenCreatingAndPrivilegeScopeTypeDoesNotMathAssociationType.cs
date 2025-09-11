@@ -15,9 +15,9 @@
         [SetUp]
         public void SetUp()
         {
-            var privilege = new Privilege("view:back-orders", "retailer");
+            var privilege = new Privilege("view:back-orders", AssociationType.Retailer);
             var sub = new Subject(new Guid().ToString());
-            var association = new Association(sub, new Uri("/accounts/123", UriKind.RelativeOrAbsolute), "account");
+            var association = new Association(sub, new Uri("/accounts/123", UriKind.RelativeOrAbsolute), AssociationType.Account);
 
             this.act = () =>
                 {
