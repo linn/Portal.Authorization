@@ -8,6 +8,8 @@
 
     using NUnit.Framework;
 
+    using TestData;
+
     public class WhenCreatingAndPrivilegeScopeTypeDoesNotMathAssociationType
     {
         private Action act;
@@ -17,11 +19,12 @@
         {
             var privilege = new Privilege("view:back-orders", AssociationType.Retailer);
             var sub = new Subject(new Guid().ToString());
-            var association = new Association(sub, new Uri("/accounts/123", UriKind.RelativeOrAbsolute), AssociationType.Account);
+            var association = new Association(sub, new Uri(
+                "/accounts/123", UriKind.RelativeOrAbsolute), AssociationType.Account);
 
             this.act = () =>
                 {
-                    new Permission(privilege, sub, association, new Subject());
+                    new Permission(privilege, sub, association, new TestPermissionCreatorSubject(association));
                 };
         }
 

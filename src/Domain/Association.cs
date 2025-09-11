@@ -12,7 +12,7 @@
             this.Type = type;
         }
 
-        public Association()
+        protected Association()
         {
         }
 
@@ -24,6 +24,6 @@
 
         public int Id { get; protected set; }
 
-        public AssociationType Type { get; set; }
+        public AssociationType Type { get; protected set; }
     }
 }

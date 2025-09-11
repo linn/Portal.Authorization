@@ -9,17 +9,17 @@
             this.ScopeType = scopeType;
         }
 
-        public Privilege()
+        protected Privilege()
         {
         }
 
-        public int Id { get; set; }
+        public int Id { get; protected set; }
 
-        public string Action { get; set; }
+        public string Action { get; protected set; }
 
-        public bool IsActive { get; set; }
+        public bool IsActive { get; protected set; }
 
-        public AssociationType ScopeType { get; set; }
+        public AssociationType ScopeType { get; protected set; }
 
         public bool AppliesToAssociation(Association association)
         {

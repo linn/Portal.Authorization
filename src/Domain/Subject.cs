@@ -13,7 +13,7 @@
             this.Permissions = new List<Permission>();
         }
 
-        public Subject()
+        protected Subject()
         {
         }
 
@@ -23,7 +23,7 @@
         
         public ICollection<Permission> Permissions { get; protected set; }
 
-        public bool HasPermissionFor(string attemptedAction, Uri? associationUri)
+        public bool HasPermissionFor(string attemptedAction, Uri associationUri)
         {
             if (this.Permissions == null || !this.Permissions.Any())
             {
