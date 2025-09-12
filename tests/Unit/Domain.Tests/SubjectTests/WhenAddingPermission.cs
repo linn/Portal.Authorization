@@ -24,7 +24,7 @@
             this.sut = new Subject(Guid.NewGuid().ToString());
             this.association = new Association(this.sut, new Uri("/accounts/123", UriKind.RelativeOrAbsolute), AssociationType.Retailer);
 
-            var grantedBy = new TestPermissionCreatorSubject(association);
+            var grantedBy = new TestPermissionCreatorSubject(this.association);
 
             this.sut.AddPermission(this.privilege, this.association, grantedBy);
         }

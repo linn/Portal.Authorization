@@ -22,11 +22,10 @@
         // for ef core
         protected Subject()
         {
-            this.associations = new List<Association>();
-            this.permissions = new List<Permission>();
         }
 
-        // for test data
+        // only ever called by test data subclasses
+        // to support seeding subjects for testing
         protected Subject(Guid sub, IEnumerable<Permission> permissions)
         {
             this.Sub = sub;
@@ -76,7 +75,13 @@
                     $"Subject {grantedBy.Sub} does not have permission to create permissions associated to {association.AssociatedResource}");
             }
 
-            // todo - check if they already have the permission?
+            if (this.permissions.Any(
+                    p => p.Privilege.Action == privilege.Action
+                         && p.Association.AssociatedResource == association.AssociatedResource))
+            {
+                throw new CreatePermissionException(
+                    $"{this.Sub} already has permission to {privilege.Action} on {association.AssociatedResource}");
+            }
 
             this.permissions.Add(new Permission(
                 privilege, this, association, grantedBy));
