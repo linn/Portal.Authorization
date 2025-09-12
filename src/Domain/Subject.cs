@@ -56,6 +56,7 @@
 
         public void AddAssociation(Association toAdd)
         {
+            // todo - prevent duplicates
             this.associations.Add(toAdd);
         }
 
