@@ -14,7 +14,8 @@
             return services
                 .AddSingleton<IHandler, JsonResultHandler<SubjectResource>>()
                 .AddSingleton<IHandler, JsonResultHandler<AuthorizationQueryResultResource>>()
-                .AddSingleton<IHandler, JsonResultHandler<PermissionResource>>();
+                .AddSingleton<IHandler, JsonResultHandler<PermissionResource>>()
+                .AddSingleton<IHandler, JsonResultHandler<IEnumerable<PrivilegeResource>>>();
         }
     }
 }

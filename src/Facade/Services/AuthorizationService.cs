@@ -1,6 +1,8 @@
 ﻿namespace Linn.Portal.Authorization.Facade.Services
 {
     using System;
+    using System.Collections.Generic;
+    using System.Linq;
     using System.Threading.Tasks;
 
     using Linn.Common.Facade;
@@ -84,6 +86,18 @@
             {
                 return new BadRequestResult<PermissionResource>(ex.Message);
             }
+        }
+
+        public async Task<IResult<IEnumerable<PrivilegeResource>>> GetPrivileges()
+        {
+            var result = await this.privilegeRepository.FindAllAsync();
+            return new SuccessResult<IEnumerable<PrivilegeResource>>(result.Select(
+                p => new PrivilegeResource
+                         {
+                             Action = p.Action,
+                             IsActive = p.IsActive,
+                             Id = p.Id
+                         }));
         }
     }   
 }

@@ -17,6 +17,7 @@
         {
             endpoints.MapPost("/portal-authorization/check-authorization", this.CheckAuth);
             endpoints.MapPost("/portal-authorization/permissions", this.CreatePermission);
+            endpoints.MapGet("/portal-authorization/privileges", this.GetPrivileges);
         }
 
         private async Task CheckAuth(
@@ -40,6 +41,15 @@
         {
             await res.Negotiate(
                 await service.CreatePermission(resource));
+        }
+
+        private async Task GetPrivileges(
+            HttpRequest req,
+            HttpResponse res,
+            IAuthorizationService service)
+        {
+            await res.Negotiate(
+                await service.GetPrivileges());
         }
     }
 }

@@ -1,6 +1,7 @@
 ﻿namespace Linn.Portal.Authorization.Facade.Services
 {
     using System;
+    using System.Collections.Generic;
     using System.Threading.Tasks;
 
     using Linn.Common.Facade;
@@ -11,5 +12,7 @@
         Task<IResult<AuthorizationQueryResultResource>> HasPermissionFor(string sub, string privilege, Uri associationUri);
 
         Task<IResult<PermissionResource>> CreatePermission(PermissionResource toCreate);
+
+        Task<IResult<IEnumerable<PrivilegeResource>>> GetPrivileges();
     }
 }
