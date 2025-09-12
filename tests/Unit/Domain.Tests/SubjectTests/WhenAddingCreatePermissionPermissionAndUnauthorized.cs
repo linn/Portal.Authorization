@@ -1,4 +1,4 @@
-﻿namespace Linn.Portal.Authorization.Domain.Tests.SubjectTests.PermissionTests
+﻿namespace Linn.Portal.Authorization.Domain.Tests.SubjectTests
 {
     using System;
 
@@ -10,7 +10,7 @@
 
     using TestData;
 
-    public class WhenCreatingCreatePermissionPermissionAndUnauthorized
+    public class WhenAddingCreatePermissionPermissionAndUnauthorized
     {
         private Action act;
 
@@ -31,7 +31,7 @@
             // but NOT the AuthAdmin permission that allows them to set up other permission creators
             this.grantedBy = new TestPermissionCreatorSubject(this.association);
 
-            this.act = () => new Permission(this.privilege, sub, this.association, this.grantedBy);
+            this.act = () => sub.AddPermission(this.privilege, this.association, this.grantedBy);
         }
 
         [Test]

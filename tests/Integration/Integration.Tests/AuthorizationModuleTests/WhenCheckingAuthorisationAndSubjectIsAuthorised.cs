@@ -29,9 +29,11 @@
             this.subject = new Subject(guid.ToString());
             var association = new Association(this.subject, retailerUri, AssociationType.Retailer);
             var privilege = new Privilege(AuthorisedActions.ViewInvoices, association.Type);
-            var permission = new Permission(privilege, this.subject, association, new TestPermissionCreatorSubject(association));
+            var grantor = new TestPermissionCreatorSubject(association);
+
+            var permission = new Permission(privilege, this.subject, association, grantor);
             this.subject.AddAssociation(association);
-            this.subject.AddPermission(permission);
+            this.subject.AddPermission(privilege, association, grantor);
 
             this.resource = new AuthorisationQueryResource
                                 {

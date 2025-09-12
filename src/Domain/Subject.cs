@@ -4,6 +4,8 @@
     using System.Collections.Generic;
     using System.Linq;
 
+    using Linn.Portal.Authorization.Domain.Exceptions;
+
     public class Subject
     {
         public Subject(string sub)
@@ -43,9 +45,32 @@
             this.Associations.Add(toAdd);
         }
 
-        public void AddPermission(Permission toAdd)
+        public void AddPermission(Privilege privilege, Association association, Subject grantedBy)
         {
-            this.Permissions.Add(toAdd);
+            if (association.Type != privilege.ScopeType)
+            {
+                throw new CreatePermissionException(
+                    $"{privilege.Action} is only applicable to associations of type {privilege.ScopeType}");
+            }
+
+            if (privilege.Action == AuthorisedActions.CreatePermission)
+            {
+                if (!grantedBy.HasPermissionFor(AuthorisedActions.AuthAdmin, null))
+                {
+                    throw new UnauthorisedActionException(
+                        $"Subject {grantedBy.Sub} is not authorised to assign {AuthorisedActions.CreatePermission}");
+                }
+            }
+            else if (!grantedBy.HasPermissionFor(AuthorisedActions.CreatePermission, association.AssociatedResource))
+            {
+                throw new UnauthorisedActionException(
+                    $"Subject {grantedBy.Sub} does not have permission to create permissions associated to {association.AssociatedResource}");
+            }
+
+            // todo - check if they already have the permission?
+
+            this.Permissions.Add(new Permission(
+                privilege, this, association, grantedBy));
         }
     }
 }

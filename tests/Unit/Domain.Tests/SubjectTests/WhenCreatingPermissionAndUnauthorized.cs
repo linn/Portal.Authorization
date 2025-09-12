@@ -1,4 +1,4 @@
-﻿namespace Linn.Portal.Authorization.Domain.Tests.SubjectTests.PermissionTests
+﻿namespace Linn.Portal.Authorization.Domain.Tests.SubjectTests
 {
     using System;
 
@@ -29,7 +29,7 @@
 
             this.act = () =>
                 {
-                    new Permission(privilege, sub, this.association, grantedBy);
+                    sub.AddPermission(privilege, this.association, grantedBy);
                 };
         }
 
@@ -37,7 +37,7 @@
         public void ShouldThrow()
         {
             this.act.Should().Throw<UnauthorisedActionException>().WithMessage(
-                $"Subject {this.grantedByGuid} does not have permission to create permissions associated to {this.association.AssociatedResource}");
+                $"Subject {grantedByGuid} does not have permission to create permissions associated to {association.AssociatedResource}");
         }
     }
 }

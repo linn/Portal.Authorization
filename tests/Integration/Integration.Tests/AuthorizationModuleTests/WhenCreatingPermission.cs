@@ -60,11 +60,7 @@
         [Test]
         public void ShouldAdd()
         {
-            this.PermissionRepository.Received(1).AddAsync(Arg.Is<Permission>(
-                p => p.Subject.Sub.ToString() == this.subject.Sub.ToString()
-                     && p.Privilege.Action == this.privilege.Action
-                     && p.GrantedBy.Sub.ToString() == this.grantedBy.Sub.ToString()
-                     && p.Association.AssociatedResource == this.association.AssociatedResource));
+            this.subject.Permissions.Count.Should().Be(1);
             this.TransactionManager.Received(1).CommitAsync();
         }
 

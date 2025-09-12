@@ -64,9 +64,7 @@
 
             try
             {
-                var permission = new Permission(privilege, subject, association, grantedBy);
-
-                await this.permissionRepository.AddAsync(permission);
+                subject.AddPermission(privilege, association, grantedBy);
                 await this.transactionManager.CommitAsync();
 
                 return new CreatedResult<PermissionResource>(

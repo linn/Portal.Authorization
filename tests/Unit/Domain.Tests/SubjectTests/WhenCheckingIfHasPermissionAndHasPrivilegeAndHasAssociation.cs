@@ -21,13 +21,12 @@
             this.sut = new Subject(Guid.NewGuid().ToString());
 
             var association = new Association(this.sut, this.retailerUri, AssociationType.Retailer);
+            var grantor = new TestPermissionCreatorSubject(association);
 
             var privilege = new Privilege(AuthorisedActions.ViewInvoices, association.Type);
 
-            var viewInvoicesPermission = new Permission(privilege, this.sut, association, new TestPermissionCreatorSubject(association));
-
             this.sut.AddAssociation(association);
-            this.sut.AddPermission(viewInvoicesPermission);
+            this.sut.AddPermission(privilege, association, grantor);
         }
 
         [Test]

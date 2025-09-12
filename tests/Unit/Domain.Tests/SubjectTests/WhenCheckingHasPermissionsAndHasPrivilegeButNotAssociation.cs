@@ -19,19 +19,14 @@
         {
             this.retailerUri = new Uri("/retailers/123", UriKind.RelativeOrAbsolute);
             this.sut = new Subject(Guid.NewGuid().ToString());
-
             var privilege = new Privilege(AuthorisedActions.ViewInvoices, AssociationType.Retailer);
             var association = new Association(
                 this.sut,
                 new Uri("/retailers/456", UriKind.RelativeOrAbsolute),
                 AssociationType.Retailer);
-            var permission = new Permission(
-                privilege,
-                this.sut,
-                new Association(this.sut, new Uri("/retailers/456", UriKind.RelativeOrAbsolute), AssociationType.Retailer),
-                new TestPermissionCreatorSubject(association));
+            var grantor = new TestPermissionCreatorSubject(association);
 
-            this.sut.AddPermission(permission);
+            this.sut.AddPermission(privilege, association, grantor);
         }
 
         [Test]
