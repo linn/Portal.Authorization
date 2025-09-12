@@ -8,31 +8,46 @@
 
     public class Subject
     {
+        private readonly List<Association> associations;
+
+        private readonly List<Permission> permissions;
+
         public Subject(string sub)
         {
             this.Sub = Guid.Parse(sub);
-            this.Associations = new List<Association>();
-            this.Permissions = new List<Permission>();
+            this.associations = new List<Association>();
+            this.permissions = new List<Permission>();
         }
 
+        // for ef core
         protected Subject()
         {
+            this.associations = new List<Association>();
+            this.permissions = new List<Permission>();
+        }
+
+        // for test data
+        protected Subject(Guid sub, IEnumerable<Permission> permissions)
+        {
+            this.Sub = sub;
+            this.associations = new List<Association>();
+            this.permissions = new List<Permission>(permissions ?? Enumerable.Empty<Permission>());
         }
 
         public Guid Sub { get; protected set; }
 
-        public ICollection<Association> Associations { get; protected set; }
-        
-        public ICollection<Permission> Permissions { get; protected set; }
+        public IReadOnlyCollection<Association> Associations => this.associations.AsReadOnly();
+
+        public IReadOnlyCollection<Permission> Permissions => this.permissions.AsReadOnly();
 
         public bool HasPermissionFor(string attemptedAction, Uri associationUri)
         {
-            if (this.Permissions == null || !this.Permissions.Any())
+            if (!this.permissions.Any())
             {
                 return false;
             }
 
-            return this.Permissions.Any(p =>
+            return this.permissions.Any(p =>
                 p.IsActive &&
                 p.Privilege.IsActive &&
                 p.Privilege.Action == attemptedAction &&
@@ -42,17 +57,11 @@
 
         public void AddAssociation(Association toAdd)
         {
-            this.Associations.Add(toAdd);
+            this.associations.Add(toAdd);
         }
 
         public void AddPermission(Privilege privilege, Association association, Subject grantedBy)
         {
-            if (association.Type != privilege.ScopeType)
-            {
-                throw new CreatePermissionException(
-                    $"{privilege.Action} is only applicable to associations of type {privilege.ScopeType}");
-            }
-
             if (privilege.Action == AuthorisedActions.CreatePermission)
             {
                 if (!grantedBy.HasPermissionFor(AuthorisedActions.AuthAdmin, null))
@@ -69,7 +78,7 @@
 
             // todo - check if they already have the permission?
 
-            this.Permissions.Add(new Permission(
+            this.permissions.Add(new Permission(
                 privilege, this, association, grantedBy));
         }
     }

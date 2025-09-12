@@ -8,6 +8,12 @@
     {
         public Permission(Privilege privilege, Subject sub, Association association, Subject grantedBy)
         {
+            if (association.Type != privilege.ScopeType)
+            {
+                throw new CreatePermissionException(
+                    $"{privilege.Action} is only applicable to associations of type {privilege.ScopeType}");
+            }
+
             this.Subject = sub;
             this.Privilege = privilege;
             this.IsActive = true;

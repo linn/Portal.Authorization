@@ -8,13 +8,8 @@
     public class TestAuthAdminSubject : Subject
     {
         public TestAuthAdminSubject()
+            : base(Guid.NewGuid(), new[] { new TestAuthAdminPermission() })
         {
-            var permission = new TestAuthAdminPermission();
-            this.Sub = permission.Subject.Sub;
-            this.Permissions = new List<Permission>
-                                   {
-                                       permission
-                                   };
         }
     }
 }
