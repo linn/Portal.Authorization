@@ -3,6 +3,7 @@
     using System.Net.Http;
 
     using Linn.Common.Persistence;
+    using Linn.Portal.Authorization.Domain;
     using Linn.Portal.Authorization.Facade.Services;
     using Linn.Portal.Authorization.Integration.Tests;
     using Linn.Portal.Authorization.IoC;
@@ -21,13 +22,31 @@
 
         protected HttpResponseMessage Response { get; set; }
 
-        protected ISubjectRepository Repository { get; private set; }
+        protected ISubjectRepository SubjectRepository { get; private set; }
+
+        protected IRepository<Permission, int> PermissionRepository { get; private set; }
+
+        protected IRepository<Privilege, int> PrivilegeRepository { get; private set; }
+
+        protected IRepository<Association, int> AssociationRepository { get; private set; }
+
+        protected ITransactionManager TransactionManager { get; private set; }
 
         [SetUp]
         public void SetUpContext()
         {
-            this.Repository = Substitute.For<ISubjectRepository>();
-            IAuthorizationService facadeService = new AuthorizationService(this.Repository);
+            this.SubjectRepository = Substitute.For<ISubjectRepository>();
+            this.PermissionRepository = Substitute.For<IRepository<Permission, int>>();
+            this.PrivilegeRepository = Substitute.For<IRepository<Privilege, int>>();
+            this.AssociationRepository = Substitute.For<IRepository<Association, int>>();
+            this.TransactionManager = Substitute.For<ITransactionManager>();
+
+            IAuthorizationService facadeService = new AuthorizationService(
+                this.SubjectRepository,
+                this.PermissionRepository,
+                this.PrivilegeRepository,
+                this.AssociationRepository,
+                this.TransactionManager);
 
             this.Client = TestClient.With<AuthorizationModule>(
                 services =>

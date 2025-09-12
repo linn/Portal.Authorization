@@ -13,6 +13,8 @@
 
     using NUnit.Framework;
 
+    using TestData;
+
     public class WhenCheckingAuthorisationAndSubjectIsAuthorised : ContextBase
     {
         private AuthorisationQueryResource resource;
@@ -25,11 +27,13 @@
             var guid = Guid.NewGuid();
             var retailerUri = new Uri("/retailers/123", UriKind.RelativeOrAbsolute);
             this.subject = new Subject(guid.ToString());
-            var association = new Association(this.subject, retailerUri, "retailer");
+            var association = new Association(this.subject, retailerUri, AssociationType.Retailer);
             var privilege = new Privilege(AuthorisedActions.ViewInvoices, association.Type);
-            var permission = new Permission(privilege, this.subject, association);
+            var grantor = new TestPermissionCreatorSubject(association);
+
+            var permission = new Permission(privilege, this.subject, association, grantor);
             this.subject.AddAssociation(association);
-            this.subject.AddPermission(permission);
+            this.subject.AddPermission(privilege, association, grantor);
 
             this.resource = new AuthorisationQueryResource
                                 {
@@ -38,7 +42,7 @@
                                     Sub = guid.ToString()
                                 };
 
-            this.Repository.GetById(guid.ToString()).Returns(this.subject);
+            this.SubjectRepository.GetById(guid.ToString()).Returns(this.subject);
 
             this.Response = this.Client.PostAsJsonAsync(
                 "/portal-authorization/check-authorization", 

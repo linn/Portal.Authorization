@@ -40,6 +40,7 @@ namespace Linn.Portal.Authorization.Persistence.Migrations
                         .HasColumnType("uuid");
 
                     b.Property<string>("Type")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.HasKey("Id");
@@ -60,6 +61,9 @@ namespace Linn.Portal.Authorization.Persistence.Migrations
                     b.Property<int?>("AssociationId")
                         .HasColumnType("integer");
 
+                    b.Property<Guid>("GrantedById")
+                        .HasColumnType("uuid");
+
                     b.Property<bool>("IsActive")
                         .HasColumnType("boolean");
 
@@ -72,6 +76,8 @@ namespace Linn.Portal.Authorization.Persistence.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("AssociationId");
+
+                    b.HasIndex("GrantedById");
 
                     b.HasIndex("PrivilegeId");
 
@@ -95,6 +101,7 @@ namespace Linn.Portal.Authorization.Persistence.Migrations
                         .HasColumnType("boolean");
 
                     b.Property<string>("ScopeType")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.HasKey("Id");
@@ -128,6 +135,12 @@ namespace Linn.Portal.Authorization.Persistence.Migrations
                         .WithMany()
                         .HasForeignKey("AssociationId");
 
+                    b.HasOne("Linn.Portal.Authorization.Domain.Subject", "GrantedBy")
+                        .WithMany()
+                        .HasForeignKey("GrantedById")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
                     b.HasOne("Linn.Portal.Authorization.Domain.Privilege", "Privilege")
                         .WithMany()
                         .HasForeignKey("PrivilegeId");
@@ -137,6 +150,8 @@ namespace Linn.Portal.Authorization.Persistence.Migrations
                         .HasForeignKey("SubjectSub");
 
                     b.Navigation("Association");
+
+                    b.Navigation("GrantedBy");
 
                     b.Navigation("Privilege");
 

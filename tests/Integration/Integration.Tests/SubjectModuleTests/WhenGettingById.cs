@@ -14,6 +14,8 @@ namespace Linn.Portal.Authorization.Integration.Tests.SubjectModuleTests
 
     using NUnit.Framework;
 
+    using TestData;
+
     public class WhenGettingById : ContextBase
     {
         private Guid subjectId;
@@ -29,12 +31,13 @@ namespace Linn.Portal.Authorization.Integration.Tests.SubjectModuleTests
             this.retailerUri = new Uri("/retailers/123", UriKind.RelativeOrAbsolute);
 
             this.subject = new Subject(this.subjectId.ToString());
-            var association = new Association(this.subject, this.retailerUri, "retailer");
+            var association = new Association(this.subject, this.retailerUri, AssociationType.Retailer);
+            var grantor = new TestPermissionCreatorSubject(association);
+
             var privilege = new Privilege(AuthorisedActions.ViewInvoices, association.Type);
-            var permission = new Permission(privilege, this.subject, association);
             this.subject.AddAssociation(association);
-            this.subject.AddPermission(permission);
-            
+                        this.subject.AddPermission(privilege, association, grantor);
+
             this.Repository.GetById(this.subjectId.ToString()).Returns(this.subject);
             
             this.Response = this.Client.Get(

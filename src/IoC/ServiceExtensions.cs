@@ -1,7 +1,10 @@
 ﻿namespace Linn.Portal.Authorization.IoC
 {
+    using Linn.Common.Facade;
     using Linn.Common.Rendering;
+    using Linn.Portal.Authorization.Domain;
     using Linn.Portal.Authorization.Facade.Services;
+    using Linn.Portal.Authorization.Resources;
 
     using Microsoft.Extensions.DependencyInjection;
 

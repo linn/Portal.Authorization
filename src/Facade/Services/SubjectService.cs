@@ -51,7 +51,7 @@
                             ?.Select(
                                 a => new LinkResource
                                          {
-                                             Rel = $"associated-{a.Type}", Href = a.AssociatedResource.ToString()
+                                             Rel = $"associated-{a.Type.ToString().ToLower()}", Href = a.AssociatedResource.ToString()
                                          })
                             .ToArray()
                     });
