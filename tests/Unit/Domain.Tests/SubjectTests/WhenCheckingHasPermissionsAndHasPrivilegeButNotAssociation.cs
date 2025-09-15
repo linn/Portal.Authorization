@@ -6,6 +6,8 @@
 
     using NUnit.Framework;
 
+    using TestData;
+
     public class WhenCheckingHasPermissionsAndHasPrivilegeButNotAssociation
     {
         private Subject sut;
@@ -17,15 +19,14 @@
         {
             this.retailerUri = new Uri("/retailers/123", UriKind.RelativeOrAbsolute);
             this.sut = new Subject(Guid.NewGuid().ToString());
-
-            var privilege = new Privilege(AuthorisedActions.ViewInvoices, "retailer");
-
-            var permission = new Permission(
-                privilege,
+            var privilege = new Privilege(AuthorisedActions.ViewInvoices, AssociationType.Retailer);
+            var association = new Association(
                 this.sut,
-                new Association(this.sut, new Uri("/retailers/456", UriKind.RelativeOrAbsolute), "retailer"));
+                new Uri("/retailers/456", UriKind.RelativeOrAbsolute),
+                AssociationType.Retailer);
+            var grantor = new TestPermissionCreatorSubject(association);
 
-            this.sut.AddPermission(permission);
+            this.sut.AddPermission(privilege, association, grantor);
         }
 
         [Test]
