@@ -39,6 +39,10 @@
 
         public IReadOnlyCollection<Permission> Permissions => this.permissions.AsReadOnly();
 
+        public string Name { get; set; }
+
+        public string Email { get; set; }
+
         public bool HasPermissionFor(string attemptedAction, Uri associationUri)
         {
             if (!this.permissions.Any())
@@ -62,6 +66,11 @@
 
         public void AddPermission(Privilege privilege, Association association, Subject grantedBy)
         {
+            if (association == null)
+            {
+                throw new CreatePermissionException("Association cannot be null");
+            }
+
             if (privilege.Action == AuthorisedActions.CreatePermission)
             {
                 if (!grantedBy.HasPermissionFor(AuthorisedActions.AuthAdmin, null))

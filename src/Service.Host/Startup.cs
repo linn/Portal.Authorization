@@ -47,9 +47,9 @@ namespace Linn.Portal.Authorization.Service.Host
                 {
                     builder.ClearProviders();           
                     builder.AddConsole();               
-                    builder.AddFilter("Microsoft", LogLevel.Warning); // Only warnings/errors for framework
-                    builder.AddFilter("System", LogLevel.Warning);    // Only warnings/errors for system logs
-                    builder.AddFilter("Linn", LogLevel.Information);  // Keep your app logs (optional)
+                    builder.AddFilter("Microsoft", LogLevel.Warning);
+                    builder.AddFilter("System", LogLevel.Warning);
+                    builder.AddFilter("Linn", LogLevel.Information);
                 });
 
             services.AddLog();

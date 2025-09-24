@@ -10,6 +10,10 @@
 
         public int PrivilegeId { get; set; }
 
-        public int AssociationId { get; set; }
+        public string PrivilegeAction { get; set; }
+
+        public int? AssociationId { get; set; }
+
+        public Uri AssociationUri { get; set; }
     }
 }
