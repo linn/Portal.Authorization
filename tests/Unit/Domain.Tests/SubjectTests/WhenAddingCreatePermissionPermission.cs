@@ -19,9 +19,12 @@
         [SetUp]
         public void SetUp()
         {
-            this.privilege = new Privilege(AuthorisedActions.CreatePermission, AssociationType.Retailer);
+            this.privilege = new Privilege(AuthorisedActions.CreatePermission, AssociationType.System);
             this.sut = new Subject(Guid.NewGuid().ToString());
-            this.association = new Association(this.sut, new Uri("/accounts/123", UriKind.RelativeOrAbsolute), AssociationType.Retailer);
+            this.association = new Association(
+                this.sut, 
+                new Uri("/accounts/123", UriKind.RelativeOrAbsolute), 
+                AssociationType.Retailer);
 
             var grantedBy = new TestAuthAdminSubject();
 

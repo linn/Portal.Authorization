@@ -1,14 +1,13 @@
 ﻿namespace Linn.Portal.Authorization.Domain
 {
-    using System;
-
     using Linn.Portal.Authorization.Domain.Exceptions;
 
     public class Permission
     {
         public Permission(Privilege privilege, Subject sub, Association association, Subject grantedBy)
         {
-            if (association.Type != privilege.ScopeType)
+            if (privilege.ScopeType != AssociationType.System
+            && association.Type != privilege.ScopeType)
             {
                 throw new CreatePermissionException(
                     $"{privilege.Action} is only applicable to associations of type {privilege.ScopeType}");
