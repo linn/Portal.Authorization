@@ -6,6 +6,7 @@
 
     using Linn.Common.Configuration;
     using Linn.Common.Facade;
+    using Linn.Common.Logging;
     using Linn.Common.Service;
     using Linn.Common.Service.Extensions;
     using Linn.Portal.Authorization.Facade.Services;

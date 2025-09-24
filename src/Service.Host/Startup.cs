@@ -20,6 +20,7 @@ namespace Linn.Portal.Authorization.Service.Host
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.FileProviders;
     using Microsoft.Extensions.Hosting;
+    using Microsoft.Extensions.Logging;
     using Microsoft.IdentityModel.Tokens;
 
     public class Startup
@@ -41,6 +42,16 @@ namespace Linn.Portal.Authorization.Service.Host
             services.AddSingleton<IResponseNegotiator, UniversalResponseNegotiator>();
 
             services.AddDefaultAWSOptions(this.configuration.GetAWSOptions());
+
+            services.AddLogging(builder =>
+                {
+                    builder.ClearProviders();           
+                    builder.AddConsole();               
+                    builder.AddFilter("Microsoft", LogLevel.Warning); // Only warnings/errors for framework
+                    builder.AddFilter("System", LogLevel.Warning);    // Only warnings/errors for system logs
+                    builder.AddFilter("Linn", LogLevel.Information);  // Keep your app logs (optional)
+                });
+
             services.AddLog();
 
             services.AddServices();
