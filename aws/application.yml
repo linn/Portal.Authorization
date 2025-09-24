@@ -1,5 +1,5 @@
 ---
-Description: Template
+Description: PortalAuthorization
 AWSTemplateFormatVersion: '2010-09-09'
 Parameters:
   dockerTag:
@@ -80,11 +80,6 @@ Resources:
           PolicyDocument:
             Version: '2012-10-17'
             Statement:
-              - Effect: Allow
-                Action:
-                  - sqs:SendMessage
-                Resource:
-                  Fn::ImportValue: logging-queue-arn
               - Effect: Allow
                 Action:
                   - ses:SendEmail
