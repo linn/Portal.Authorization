@@ -10,7 +10,7 @@
 
     using TestData;
 
-    public class WhenCreatingPermissionAndUnauthorized
+    public class WhenAddingPermissionAndUnauthorized
     {
         private Action act;
 
