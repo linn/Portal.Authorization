@@ -12,7 +12,7 @@
             this.GrantedBy = new TestAuthAdminSubject();
             this.Association = association;
             this.IsActive = true;
-            this.Privilege = new Privilege(AuthorisedActions.CreatePermission, AssociationType.System);
+            this.Privilege = new Privilege(AuthorisedActions.ManagePermissions, AssociationType.System);
         }
     }
 }

@@ -43,7 +43,6 @@
 
             IAuthorizationService facadeService = new AuthorizationService(
                 this.SubjectRepository,
-                this.PermissionRepository,
                 this.PrivilegeRepository,
                 this.AssociationRepository,
                 this.TransactionManager);

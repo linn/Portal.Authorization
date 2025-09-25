@@ -1,4 +1,6 @@
-﻿namespace Linn.Portal.Authorization.Service.Modules
+﻿using Linn.Portal.Authorization.Domain;
+
+namespace Linn.Portal.Authorization.Service.Modules
 {
     using System.Threading.Tasks;
 
@@ -46,10 +48,11 @@
         private async Task GetPrivileges(
             HttpRequest req,
             HttpResponse res,
-            IAuthorizationService service)
+            IAuthorizationService service,
+            AssociationType scopeType)
         {
             await res.Negotiate(
-                await service.GetPrivileges());
+                await service.GetPrivileges(scopeType));
         }
     }
 }
