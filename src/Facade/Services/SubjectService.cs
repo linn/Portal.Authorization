@@ -72,7 +72,7 @@
                                             AssociationId = p.Association?.Id,
                                             IsActive = p.IsActive && p.Privilege.IsActive
                                         }),
-                           Links = subject.Associations?.Select(
+                           Links = subject.Associations?.Where(x => x.IsActive).Select(
                                a => new LinkResource
                                         {
                                             Rel = $"associated-{a.Type.ToString().ToLower()}",
