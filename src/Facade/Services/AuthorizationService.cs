@@ -15,9 +15,7 @@
     public class AuthorizationService : IAuthorizationService
     {
         private readonly ISubjectRepository subjectRepository;
-
-        private readonly IRepository<Permission, int> permissionRepository;
-
+        
         private readonly IRepository<Privilege, int> privilegeRepository;
 
         private readonly IRepository<Association, int> associationRepository;
@@ -26,13 +24,11 @@
 
         public AuthorizationService(
             ISubjectRepository subjectRepository,
-            IRepository<Permission, int> permissionRepository,
             IRepository<Privilege, int> privilegeRepository,
             IRepository<Association, int> associationRepository,
             ITransactionManager transactionManager)
         {
             this.subjectRepository = subjectRepository;
-            this.permissionRepository = permissionRepository;
             this.privilegeRepository = privilegeRepository;
             this.associationRepository = associationRepository;
             this.transactionManager = transactionManager;

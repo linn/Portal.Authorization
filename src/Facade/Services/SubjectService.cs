@@ -69,7 +69,8 @@
                                             PrivilegeId = p.Privilege.Id,
                                             AssociationUri = p.Association?.AssociatedResource,
                                             PrivilegeAction = p.Privilege.Action,
-                                            AssociationId = p.Association?.Id
+                                            AssociationId = p.Association?.Id,
+                                            IsActive = p.IsActive && p.Privilege.IsActive
                                         }),
                            Links = subject.Associations?.Select(
                                a => new LinkResource

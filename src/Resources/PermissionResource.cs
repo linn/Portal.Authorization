@@ -15,5 +15,7 @@
         public int? AssociationId { get; set; }
 
         public Uri AssociationUri { get; set; }
+        
+        public bool IsActive { get; set; }
     }
 }
