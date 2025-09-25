@@ -86,10 +86,10 @@
             }
         }
 
-        public async Task<IResult<IEnumerable<PrivilegeResource>>> GetPrivileges()
+        public async Task<IResult<IEnumerable<PrivilegeResource>>> GetPrivileges(AssociationType scopeType)
         {
             var result = await this.privilegeRepository.FindAllAsync();
-            return new SuccessResult<IEnumerable<PrivilegeResource>>(result.Select(
+            return new SuccessResult<IEnumerable<PrivilegeResource>>(result.Where(x => x.ScopeType == scopeType).Select(
                 p => new PrivilegeResource
                          {
                              Action = p.Action,

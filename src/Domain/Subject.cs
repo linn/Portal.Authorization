@@ -29,11 +29,11 @@
         protected Subject(Guid sub, IEnumerable<Permission> permissions)
         {
             this.Sub = sub;
-            this.associations = new List<Association>();
-            this.permissions = new List<Permission>(permissions ?? Enumerable.Empty<Permission>());
+            this.associations = [];
+            this.permissions = [..permissions ?? []];
         }
 
-        public Guid Sub { get; protected set; }
+        public Guid Sub { get; protected init; }
 
         public IReadOnlyCollection<Association> Associations => this.associations.AsReadOnly();
 
@@ -66,11 +66,14 @@
 
         public void AddPermission(Privilege privilege, Association association, Subject grantedBy)
         {
+            var toAdd = new Permission(
+                privilege, this, association, grantedBy);
+            
             if (association == null)
             {
                 throw new CreatePermissionException("Association cannot be null");
             }
-
+            
             if (privilege.Action == AuthorisedActions.CreatePermission)
             {
                 if (!grantedBy.HasPermissionFor(AuthorisedActions.AuthAdmin, null))
@@ -93,8 +96,7 @@
                     $"{this.Sub} already has permission to {privilege.Action} on {association.AssociatedResource}");
             }
 
-            this.permissions.Add(new Permission(
-                privilege, this, association, grantedBy));
+            this.permissions.Add(toAdd);
         }
     }
 }

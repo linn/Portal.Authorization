@@ -1,4 +1,6 @@
-﻿namespace Linn.Portal.Authorization.Facade.Services
+﻿using Linn.Portal.Authorization.Domain;
+
+namespace Linn.Portal.Authorization.Facade.Services
 {
     using System;
     using System.Collections.Generic;
@@ -13,6 +15,6 @@
 
         Task<IResult<PermissionResource>> CreatePermission(PermissionResource toCreate);
 
-        Task<IResult<IEnumerable<PrivilegeResource>>> GetPrivileges();
+        Task<IResult<IEnumerable<PrivilegeResource>>> GetPrivileges(AssociationType scopeType);
     }
 }

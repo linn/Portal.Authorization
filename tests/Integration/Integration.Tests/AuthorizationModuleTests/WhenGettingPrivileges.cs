@@ -26,7 +26,7 @@
             this.PrivilegeRepository.FindAllAsync().Returns(new List<Privilege> { this.privilege });
 
             this.Response = this.Client.Get(
-                "/portal-authorization/privileges",
+                "/portal-authorization/privileges?scopeType=Retailer",
                 with =>
                     {
                         with.Accept("application/json");
