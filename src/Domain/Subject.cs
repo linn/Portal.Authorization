@@ -74,15 +74,15 @@
                 throw new CreatePermissionException("Association cannot be null");
             }
             
-            if (privilege.Action == AuthorisedActions.CreatePermission)
+            if (privilege.Action == AuthorisedActions.ManagePermissions)
             {
                 if (!grantedBy.HasPermissionFor(AuthorisedActions.AuthAdmin, null))
                 {
                     throw new UnauthorisedActionException(
-                        $"Subject {grantedBy.Sub} is not authorised to assign {AuthorisedActions.CreatePermission}");
+                        $"Subject {grantedBy.Sub} is not authorised to assign {AuthorisedActions.ManagePermissions}");
                 }
             }
-            else if (!grantedBy.HasPermissionFor(AuthorisedActions.CreatePermission, association.AssociatedResource))
+            else if (!grantedBy.HasPermissionFor(AuthorisedActions.ManagePermissions, association.AssociatedResource))
             {
                 throw new UnauthorisedActionException(
                     $"Subject {grantedBy.Sub} does not have permission to create permissions associated to {association.AssociatedResource}");

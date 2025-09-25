@@ -19,7 +19,7 @@
         [SetUp]
         public void SetUp()
         {
-            this.privilege = new Privilege(AuthorisedActions.CreatePermission, AssociationType.System);
+            this.privilege = new Privilege(AuthorisedActions.ManagePermissions, AssociationType.System);
             this.sut = new Subject(Guid.NewGuid().ToString());
             this.association = new Association(
                 this.sut, 
