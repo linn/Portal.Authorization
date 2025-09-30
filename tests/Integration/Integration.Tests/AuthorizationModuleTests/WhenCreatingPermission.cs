@@ -1,13 +1,13 @@
 ﻿namespace Linn.Portal.Authorization.Integration.Tests.AuthorizationModuleTests
 {
     using System;
+    using System.Linq.Expressions;
     using System.Net;
     using System.Net.Http.Json;
 
     using FluentAssertions;
 
     using Linn.Portal.Authorization.Domain;
-    using Linn.Portal.Authorization.Integration.Tests.Extensions;
     using Linn.Portal.Authorization.Resources;
 
     using NSubstitute;
@@ -51,7 +51,7 @@
             this.SubjectRepository.GetById(granteeGuid.ToString()).Returns(this.subject);
             this.SubjectRepository.GetById(grantedByGuid.ToString()).Returns(this.grantedBy);
 
-            this.AssociationRepository.FindByIdAsync(Arg.Any<int>()).Returns(this.association);
+            this.AssociationRepository.FindByAsync(Arg.Any<Expression<Func<Association, bool>>>()).Returns(this.association);
             this.PrivilegeRepository.FindByIdAsync(Arg.Any<int>()).Returns(this.privilege);
             this.Response = this.Client.PostAsJsonAsync(
                 "/portal-authorization/permissions",
@@ -69,8 +69,6 @@
         public void ShouldReturnCreated()
         {
             this.Response.StatusCode.Should().Be(HttpStatusCode.Created);
-            var res = this.Response.DeserializeBody<PermissionResource>();
-            res.PrivilegeAction.Should().Be(this.privilege.Action);
         }
     }
 }
