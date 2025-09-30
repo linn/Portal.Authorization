@@ -56,7 +56,8 @@
             var subject = await this.subjectRepository.GetById(toCreate.Sub);
             var grantedBy = await this.subjectRepository.GetById(toCreate.GrantedBySub);
             var privilege = await this.privilegeRepository.FindByIdAsync(toCreate.PrivilegeId);
-            var association = await this.associationRepository.FindByAsync(x => x.AssociatedResource == toCreate.AssociationUri);
+            var association = await this.associationRepository.FindByAsync(
+                                  x => x.AssociatedResource == toCreate.AssociationUri && x.Subject.Sub.ToString() == toCreate.Sub);
 
             try
             {

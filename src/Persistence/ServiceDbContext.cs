@@ -6,6 +6,7 @@
     using Linn.Portal.Authorization.Domain;
 
     using Microsoft.EntityFrameworkCore;
+    using Microsoft.Extensions.Logging;
 
     public class ServiceDbContext : DbContext
     {
@@ -63,7 +64,8 @@
             }
 
             optionsBuilder.UseNpgsql(
-                $"User ID={userId};Password={password};Host={host};Database={databaseName};Port={port};Pooling=true;");
+                $"User ID={userId};Password={password};Host={host};Database={databaseName};Port={port};Pooling=true;")
+                .LogTo(Console.WriteLine, LogLevel.Information);
 
             base.OnConfiguring(optionsBuilder);
         }
