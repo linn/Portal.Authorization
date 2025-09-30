@@ -9,7 +9,6 @@
 	<ItemGroup>
 		<PackageReference Include="FluentAssertions" Version="7.2.0" />
 		<PackageReference Include="Linn.Common.Facade" Version="13.1.0" />
-		<PackageReference Include="Linn.Common.Proxy.LinnApps" Version="4.1.0" />
 		<PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.14.1" />
 		<PackageReference Include="MSTest.TestAdapter" Version="3.10.2" />
 		<PackageReference Include="MSTest.TestFramework" Version="3.10.2" />
