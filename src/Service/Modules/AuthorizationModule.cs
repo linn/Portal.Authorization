@@ -1,11 +1,10 @@
-﻿using Linn.Portal.Authorization.Domain;
-
-namespace Linn.Portal.Authorization.Service.Modules
+﻿namespace Linn.Portal.Authorization.Service.Modules
 {
     using System.Threading.Tasks;
 
     using Linn.Common.Service;
     using Linn.Common.Service.Extensions;
+    using Linn.Portal.Authorization.Domain;
     using Linn.Portal.Authorization.Facade.Services;
     using Linn.Portal.Authorization.Resources;
 
@@ -24,7 +23,7 @@ namespace Linn.Portal.Authorization.Service.Modules
 
         private async Task CheckAuth(
             HttpRequest req,
-            HttpResponse res,
+            HttpResponse res, 
             AuthorisationQueryResource resource,
             IAuthorizationService service)
         {
