@@ -7,6 +7,7 @@
     using FluentAssertions;
 
     using Linn.Portal.Authorization.Domain;
+    using Linn.Portal.Authorization.Integration.Tests.Extensions;
     using Linn.Portal.Authorization.Resources;
 
     using NSubstitute;
@@ -68,6 +69,8 @@
         public void ShouldReturnCreated()
         {
             this.Response.StatusCode.Should().Be(HttpStatusCode.Created);
+            var res = this.Response.DeserializeBody<PermissionResource>();
+            res.PrivilegeAction.Should().Be(this.privilege.Action);
         }
     }
 }
