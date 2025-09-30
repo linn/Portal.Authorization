@@ -64,8 +64,8 @@
             }
 
             optionsBuilder.UseNpgsql(
-                $"User ID={userId};Password={password};Host={host};Database={databaseName};Port={port};Pooling=true;")
-                .LogTo(Console.WriteLine, LogLevel.Information);
+                $"User ID={userId};Password={password};Host={host};Database={databaseName};Port={port};Pooling=true;");
+                // .LogTo(Console.WriteLine, LogLevel.Information);
 
             base.OnConfiguring(optionsBuilder);
         }
