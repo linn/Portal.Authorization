@@ -23,7 +23,7 @@
         [SetUp]
         public void SetUp()
         {
-            this.privilege = new Privilege(AuthorisedActions.CreatePermission, AssociationType.Retailer);
+            this.privilege = new Privilege(AuthorisedActions.ManagePermissions, AssociationType.Retailer);
             var sub = new Subject(Guid.NewGuid().ToString());
             this.association = new Association(sub, new Uri("/accounts/123", UriKind.RelativeOrAbsolute), AssociationType.Retailer);
 
@@ -38,7 +38,7 @@
         public void ShouldThrow()
         {
             this.act.Should().Throw<UnauthorisedActionException>().WithMessage(
-                $"Subject {grantedBy.Sub} is not authorised to assign {AuthorisedActions.CreatePermission}");
+                $"Subject {grantedBy.Sub} is not authorised to assign {AuthorisedActions.ManagePermissions}");
         }
     }
 }

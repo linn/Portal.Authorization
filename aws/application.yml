@@ -1,5 +1,5 @@
 ---
-Description: Template
+Description: PortalAuthorization
 AWSTemplateFormatVersion: '2010-09-09'
 Parameters:
   dockerTag:
@@ -82,11 +82,6 @@ Resources:
             Statement:
               - Effect: Allow
                 Action:
-                  - sqs:SendMessage
-                Resource:
-                  Fn::ImportValue: logging-queue-arn
-              - Effect: Allow
-                Action:
                   - ses:SendEmail
                   - ses:SendRawEmail
                 Resource: '*'
@@ -107,6 +102,12 @@ Resources:
                 Action:
                   - s3:*
                 Resource: !Sub "arn:aws:s3:::auth${environmentSuffix}*-keysbucket*"
+  StackLogGroup: 
+    Type: AWS::Logs::LogGroup
+    DeletionPolicy: Delete
+    Properties:
+      LogGroupName: !Sub ${AWS::StackName}-LogGroup
+      RetentionInDays: 14
   portalAuthorizationTaskDefinition:
     Type: AWS::ECS::TaskDefinition
     Properties:
@@ -130,16 +131,17 @@ Resources:
             Command:
               - "CMD-SHELL"
               - "curl -f http://localhost:5050/healthcheck || exit 1"
+          LogConfiguration:
+            LogDriver: awslogs
+            Options:
+              awslogs-region: !Ref AWS::Region
+              awslogs-group: !Ref StackLogGroup
+              awslogs-stream-prefix: !Ref AWS::StackName
           DockerLabels:
             traefik.enable: true
             traefik.http.routers.template.entrypoints: web
             traefik.http.routers.template.rule: "PathPrefix(`/portal-authorization`)"
             traefik.http.services.template.loadbalancer.healthcheck.path: "/healthcheck"
-          LogConfiguration:
-            LogDriver: gelf
-            Options:
-              'gelf-address': 'udp://syslog.linn.co.uk:12201'
-              'tag': !Sub portalAuthorization-${dockerTag}-ecs-task
           Environment:
             - Name: DATABASE_HOST
               Value: !Ref databaseHost

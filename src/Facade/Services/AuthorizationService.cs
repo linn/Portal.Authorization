@@ -15,9 +15,7 @@
     public class AuthorizationService : IAuthorizationService
     {
         private readonly ISubjectRepository subjectRepository;
-
-        private readonly IRepository<Permission, int> permissionRepository;
-
+        
         private readonly IRepository<Privilege, int> privilegeRepository;
 
         private readonly IRepository<Association, int> associationRepository;
@@ -26,13 +24,11 @@
 
         public AuthorizationService(
             ISubjectRepository subjectRepository,
-            IRepository<Permission, int> permissionRepository,
             IRepository<Privilege, int> privilegeRepository,
             IRepository<Association, int> associationRepository,
             ITransactionManager transactionManager)
         {
             this.subjectRepository = subjectRepository;
-            this.permissionRepository = permissionRepository;
             this.privilegeRepository = privilegeRepository;
             this.associationRepository = associationRepository;
             this.transactionManager = transactionManager;
@@ -60,7 +56,8 @@
             var subject = await this.subjectRepository.GetById(toCreate.Sub);
             var grantedBy = await this.subjectRepository.GetById(toCreate.GrantedBySub);
             var privilege = await this.privilegeRepository.FindByIdAsync(toCreate.PrivilegeId);
-            var association = await this.associationRepository.FindByIdAsync(toCreate.AssociationId);
+            var association = await this.associationRepository.FindByAsync(
+                                  x => x.AssociatedResource == toCreate.AssociationUri && x.Subject.Sub.ToString() == toCreate.Sub);
 
             try
             {
@@ -86,10 +83,10 @@
             }
         }
 
-        public async Task<IResult<IEnumerable<PrivilegeResource>>> GetPrivileges()
+        public async Task<IResult<IEnumerable<PrivilegeResource>>> GetPrivileges(AssociationType scopeType)
         {
             var result = await this.privilegeRepository.FindAllAsync();
-            return new SuccessResult<IEnumerable<PrivilegeResource>>(result.Select(
+            return new SuccessResult<IEnumerable<PrivilegeResource>>(result.Where(x => x.ScopeType == scopeType).Select(
                 p => new PrivilegeResource
                          {
                              Action = p.Action,

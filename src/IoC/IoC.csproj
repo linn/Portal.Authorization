@@ -9,7 +9,6 @@
 	<ItemGroup>
 		<PackageReference Include="AWSSDK.Core" Version="4.0.0.25" />
 		<PackageReference Include="AWSSDK.Extensions.NETCore.Setup" Version="4.0.2.2" />
-		<PackageReference Include="AWSSDK.SQS" Version="4.0.1.1" />
 		<PackageReference Include="Linn.Common.Authorisation" Version="1.0.0" />
 		<PackageReference Include="Linn.Common.Facade" Version="13.1.0" />
 		<PackageReference Include="Linn.Common.Logging" Version="2.0.0" />

@@ -4,6 +4,7 @@
 
     using Linn.Common.Service;
     using Linn.Common.Service.Extensions;
+    using Linn.Portal.Authorization.Domain;
     using Linn.Portal.Authorization.Facade.Services;
     using Linn.Portal.Authorization.Resources;
 
@@ -22,7 +23,7 @@
 
         private async Task CheckAuth(
             HttpRequest req,
-            HttpResponse res,
+            HttpResponse res, 
             AuthorisationQueryResource resource,
             IAuthorizationService service)
         {
@@ -46,10 +47,11 @@
         private async Task GetPrivileges(
             HttpRequest req,
             HttpResponse res,
-            IAuthorizationService service)
+            IAuthorizationService service,
+            AssociationType scopeType)
         {
             await res.Negotiate(
-                await service.GetPrivileges());
+                await service.GetPrivileges(scopeType));
         }
     }
 }

@@ -29,15 +29,19 @@
         protected Subject(Guid sub, IEnumerable<Permission> permissions)
         {
             this.Sub = sub;
-            this.associations = new List<Association>();
-            this.permissions = new List<Permission>(permissions ?? Enumerable.Empty<Permission>());
+            this.associations = [];
+            this.permissions = [..permissions ?? []];
         }
 
-        public Guid Sub { get; protected set; }
+        public Guid Sub { get; protected init; }
 
         public IReadOnlyCollection<Association> Associations => this.associations.AsReadOnly();
 
         public IReadOnlyCollection<Permission> Permissions => this.permissions.AsReadOnly();
+
+        public string Name { get; set; }
+
+        public string Email { get; set; }
 
         public bool HasPermissionFor(string attemptedAction, Uri associationUri)
         {
@@ -62,15 +66,23 @@
 
         public void AddPermission(Privilege privilege, Association association, Subject grantedBy)
         {
-            if (privilege.Action == AuthorisedActions.CreatePermission)
+            var toAdd = new Permission(
+                privilege, this, association, grantedBy);
+            
+            if (association == null)
+            {
+                throw new CreatePermissionException("Association cannot be null");
+            }
+            
+            if (privilege.Action == AuthorisedActions.ManagePermissions)
             {
                 if (!grantedBy.HasPermissionFor(AuthorisedActions.AuthAdmin, null))
                 {
                     throw new UnauthorisedActionException(
-                        $"Subject {grantedBy.Sub} is not authorised to assign {AuthorisedActions.CreatePermission}");
+                        $"Subject {grantedBy.Sub} is not authorised to assign {AuthorisedActions.ManagePermissions}");
                 }
             }
-            else if (!grantedBy.HasPermissionFor(AuthorisedActions.CreatePermission, association.AssociatedResource))
+            else if (!grantedBy.HasPermissionFor(AuthorisedActions.ManagePermissions, association.AssociatedResource))
             {
                 throw new UnauthorisedActionException(
                     $"Subject {grantedBy.Sub} does not have permission to create permissions associated to {association.AssociatedResource}");
@@ -84,8 +96,7 @@
                     $"{this.Sub} already has permission to {privilege.Action} on {association.AssociatedResource}");
             }
 
-            this.permissions.Add(new Permission(
-                privilege, this, association, grantedBy));
+            this.permissions.Add(toAdd);
         }
     }
 }

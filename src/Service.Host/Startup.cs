@@ -1,7 +1,6 @@
 namespace Linn.Portal.Authorization.Service.Host
 {
     using System.IdentityModel.Tokens.Jwt;
-    using System.IO;
     
     using Linn.Common.Authentication.Host.Extensions;
     using Linn.Common.Logging;
@@ -18,8 +17,7 @@ namespace Linn.Portal.Authorization.Service.Host
     using Microsoft.AspNetCore.Http;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
-    using Microsoft.Extensions.FileProviders;
-    using Microsoft.Extensions.Hosting;
+    using Microsoft.Extensions.Logging;
     using Microsoft.IdentityModel.Tokens;
 
     public class Startup
@@ -41,6 +39,16 @@ namespace Linn.Portal.Authorization.Service.Host
             services.AddSingleton<IResponseNegotiator, UniversalResponseNegotiator>();
 
             services.AddDefaultAWSOptions(this.configuration.GetAWSOptions());
+
+            services.AddLogging(builder =>
+                {
+                    builder.ClearProviders();           
+                    builder.AddConsole();               
+                    builder.AddFilter("Microsoft", LogLevel.Warning);
+                    builder.AddFilter("System", LogLevel.Warning);
+                    builder.AddFilter("Linn", LogLevel.Information);
+                });
+
             services.AddLog();
 
             services.AddServices();
@@ -95,25 +103,6 @@ namespace Linn.Portal.Authorization.Service.Host
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             app.UseCors(builder => builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
-
-            if (env.IsDevelopment())
-            {
-                app.UseDeveloperExceptionPage();
-                app.UseStaticFiles(new StaticFileOptions
-                                       {
-                                           RequestPath = "/portal-authorization/build",
-                                           FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), "client", "build"))
-                                       });
-            }
-            else
-            {
-                app.UseStaticFiles(new StaticFileOptions
-                                       {
-                                           RequestPath = "/portal-authorization/build",
-                                           FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), "app", "client", "build"))
-                                       });
-            }
-
             app.UseAuthentication();
 
             app.UseBearerTokenAuthentication();

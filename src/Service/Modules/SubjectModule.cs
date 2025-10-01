@@ -1,7 +1,6 @@
 ﻿namespace Linn.Portal.Authorization.Service.Modules
 {
     using System;
-    using System.Linq;
     using System.Threading.Tasks;
 
     using Linn.Common.Configuration;
@@ -21,6 +20,7 @@
         {
             endpoints.MapPost("/portal-authorization/subjects", this.PostSubject);
             endpoints.MapGet("/portal-authorization/subjects/{subjectId}", this.GetSubject);
+            endpoints.MapGet("/portal-authorization/subjects", this.GetSubjectsWithAssociation);
         }
 
         private async Task PostSubject(
@@ -50,6 +50,18 @@
             ISubjectService service)
         {
             var result = await service.GetSubject(subjectId);
+            await res.Negotiate(result);
+        }
+
+        private async Task GetSubjectsWithAssociation(
+            HttpRequest req,
+            HttpResponse res,
+            Uri associationUri,
+            ISubjectService service)
+        {
+            // todo - (but in the portal repo)
+            // you should only get access to this list if you have the create:permissions permission for the specified associationUri
+            var result = await service.GetSubjectsWithAssociation(associationUri);
             await res.Negotiate(result);
         }
     }

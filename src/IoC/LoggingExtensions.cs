@@ -1,9 +1,5 @@
 ﻿namespace Linn.Portal.Authorization.IoC
 {
-    using System;
-
-    using Amazon.SQS;
-
     using Linn.Common.Logging;
 
     using Microsoft.Extensions.DependencyInjection;
